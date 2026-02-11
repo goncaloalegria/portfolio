@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/* CONFIGURAÇÃO DO TEMA (TAILWIND v4) 
+  Isto substitui o ficheiro tailwind.config.ts
+*/
+@theme {
+  /* Fontes */
+  --font-exo: var(--font-exo);
+  --font-orbitron: var(--font-orbitron);
+  --font-audiowide: var(--font-audiowide);
+
+  /* Cores */
+  --color-bg: #0c1018;
+  --color-panel: #101829;
+  --color-text: #eef1ff;
+  --color-muted: rgba(238, 241, 255, 0.70);
+  --color-accent: #a855f7;
+  --color-accent-2: #7c3aed;
+  --color-danger: #ff1744;
+  
+  /* Raios de borda */
+  --radius-radius: 16px;
+}
+
+/* CSS GLOBAL E UTILITÁRIOS
+*/
+
+/* O Light Mode muda as variáveis de cor */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg: #f5f1ff;
+    --color-panel: #ffffff;
+    --color-text: #141226;
+    --color-muted: rgba(20, 18, 38, 0.65);
+    --color-danger: #e53935;
+  }
+}
+/* Suporte manual para classe .light ou data-theme="light" */
+:root[data-theme="light"] {
+  --color-bg: #f5f1ff;
+  --color-panel: #ffffff;
+  --color-text: #141226;
+  --color-muted: rgba(20, 18, 38, 0.65);
+  --color-danger: #e53935;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
+  
+  /* Background fixo */
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(168,85,247,.18), transparent 55%),
+    radial-gradient(circle at 80% 30%, rgba(124,58,237,.14), transparent 55%),
+    radial-gradient(circle at top left, rgba(124,58,237,.12), #05060a);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Animações e Utilitários Custom */
+.glitch {
+  text-shadow: 0 0 14px rgba(168,85,247,.55), 0 0 28px rgba(124,58,237,.22);
+}
+
+.glass-panel {
+  background-color: color-mix(in srgb, var(--color-panel), transparent 30%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--color-accent), transparent 80%);
+}
+
+@keyframes scan-sweep {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+
+.scan-effect {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.scan-effect::after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(168,85,247,0.35), transparent);
+  animation: scan-sweep 3s infinite;
+}
