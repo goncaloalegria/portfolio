@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+/* =======================
+   SCALE GLOBAL (-25%)
+   ======================= */
+:root {
+  --site-scale: 0.75;
+}
+
+/* Só em desktop (para não ficar minúsculo no telemóvel) */
+@media (min-width: 1024px) {
+  /* Chrome/Edge (suporta zoom) */
+  @supports (zoom: 1) {
+    html {
+      zoom: var(--site-scale);
+    }
+  }
+
+  /* Fallback (Firefox): reduz apenas a escala baseada em rem */
+  @supports not (zoom: 1) {
+    html {
+      font-size: calc(16px * var(--site-scale));
+    }
+  }
+}
+
 /* CONFIGURAÇÃO DO TEMA (TAILWIND v4) 
   Isto substitui o ficheiro tailwind.config.ts
 */
@@ -17,7 +41,7 @@
   --color-accent: #a855f7;
   --color-accent-2: #7c3aed;
   --color-danger: #ff1744;
-  
+
   /* Raios de borda */
   --radius-radius: 16px;
 }
@@ -48,7 +72,7 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
-  
+
   /* Background fixo */
   background-image:
     radial-gradient(circle at 20% 10%, rgba(168,85,247,.18), transparent 55%),
