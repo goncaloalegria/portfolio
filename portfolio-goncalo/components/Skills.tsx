@@ -1,9 +1,11 @@
-// Skills.tsx (COMPLETO)
+// components/Skills.tsx
 "use client";
 
 import { useMemo, useState } from "react";
 import { skills } from "@/lib/data";
 import { motion, useReducedMotion } from "framer-motion";
+import DecryptTitle from "@/components/DecryptTitle";
+import GlowingCard from "@/components/GlowingCard";
 
 type Skill = (typeof skills)[number];
 
@@ -49,88 +51,66 @@ export default function Skills() {
     }
 
     for (const k of map.keys()) {
-      map.set(
-        k,
-        (map.get(k) || []).slice().sort((a, b) => b.level - a.level)
-      );
+      map.set(k, (map.get(k) || []).slice().sort((a, b) => b.level - a.level));
     }
 
-    return order
-      .filter((k) => (map.get(k) || []).length > 0)
-      .map((k) => ({ key: k, items: map.get(k)! }));
+    return order.filter((k) => (map.get(k) || []).length > 0).map((k) => ({ key: k, items: map.get(k)! }));
   }, []);
 
   return (
     <section id="skills" className="py-20 container mx-auto px-4 scroll-mt-24">
-      <h2 className="text-3xl md:text-4xl font-audiowide text-accent mb-8 scan-effect">
-        Skills
-      </h2>
+      <DecryptTitle text="Skills" className="text-3xl md:text-4xl mb-8" />
 
       <div className="glass-panel rounded-3xl p-5 md:p-7">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {groups.map((g) => (
-            <div key={g.key} className="rounded-3xl border border-accent/15 bg-panel/10 p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="font-audiowide text-sm text-text">{g.key}</div>
-                <div className="text-[11px] text-muted font-audiowide">{g.items.length}</div>
-              </div>
+            <GlowingCard key={g.key} className="h-full">
+              <div className="p-5 h-full flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="font-audiowide text-sm text-text">{g.key}</div>
+                  <div className="text-[11px] text-muted font-audiowide bg-panel/50 px-2 py-0.5 rounded-md border border-accent/10">{g.items.length}</div>
+                </div>
 
-              <div className="flex flex-col gap-3">
-                {g.items.map((s) => {
-                  const { rank, tone } = levelToRank(s.level);
-                  const dim = active && active !== s.name ? "opacity-50" : "opacity-100";
-                  const hot = active === s.name ? "border-accent/45 shadow-[0_0_22px_rgba(168,85,247,0.18)]" : "";
+                <div className="flex flex-col gap-3">
+                  {g.items.map((s) => {
+                    const { rank, tone } = levelToRank(s.level);
+                    const dim = active && active !== s.name ? "opacity-50" : "opacity-100";
+                    const hot = active === s.name ? "border-accent/45 shadow-[0_0_22px_rgba(168,85,247,0.18)]" : "";
 
-                  return (
-                    <motion.button
-                      key={s.name}
-                      type="button"
-                      onMouseEnter={() => setActive(s.name)}
-                      onMouseLeave={() => setActive(null)}
-                      onFocus={() => setActive(s.name)}
-                      onBlur={() => setActive(null)}
-                      className={[
-                        "text-left rounded-2xl border p-3 transition outline-none",
-                        "focus:ring-2 ring-accent",
-                        tone,
-                        hot,
-                        dim,
-                      ].join(" ")}
-                      whileHover={reduceMotion ? undefined : { y: -2 }}
-                      transition={{ type: "spring", stiffness: 320, damping: 24 }}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <div className="font-audiowide text-[13px] text-text truncate">{s.name}</div>
-                          <div className="mt-1 text-[11px] text-muted leading-relaxed">
-                            {(proofBySkill[s.name] || ["Projeto/uso (placeholder)", "Projeto/uso (placeholder)"])
-                              .slice(0, 2)
-                              .join(" • ")}
+                    return (
+                      <motion.button
+                        key={s.name}
+                        type="button"
+                        onMouseEnter={() => setActive(s.name)}
+                        onMouseLeave={() => setActive(null)}
+                        onFocus={() => setActive(s.name)}
+                        onBlur={() => setActive(null)}
+                        className={["text-left rounded-2xl border p-3 transition outline-none focus:ring-2 ring-accent", tone, hot, dim].join(" ")}
+                        whileHover={reduceMotion ? undefined : { y: -2 }}
+                        transition={{ type: "spring", stiffness: 320, damping: 24 }}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="font-audiowide text-[13px] text-text truncate">{s.name}</div>
+                            <div className="mt-1 text-[11px] text-muted leading-relaxed">
+                              {(proofBySkill[s.name] || ["Projeto/uso", "Projeto/uso"]).slice(0, 2).join(" • ")}
+                            </div>
+                          </div>
+                          <div className="shrink-0 text-right">
+                            <div className="font-audiowide text-[11px] text-accent">{rank}</div>
+                            <div className="font-audiowide text-[11px] text-muted mt-0.5">{s.level}%</div>
                           </div>
                         </div>
-
-                        <div className="shrink-0 text-right">
-                          <div className="font-audiowide text-[11px] text-accent">{rank}</div>
-                          <div className="font-audiowide text-[11px] text-muted mt-0.5">{s.level}%</div>
+                        <div className="mt-3 h-[2px] rounded-full overflow-hidden bg-accent/10">
+                          <div className="h-full bg-gradient-to-r from-accent to-accent-2" style={{ width: `${s.level}%` }} />
                         </div>
-                      </div>
-
-                      <div className="mt-3 h-[2px] rounded-full overflow-hidden bg-accent/10">
-                        <div
-                          className="h-full bg-gradient-to-r from-accent to-accent-2"
-                          style={{ width: `${s.level}%` }}
-                        />
-                      </div>
-                    </motion.button>
-                  );
-                })}
+                      </motion.button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            </GlowingCard>
           ))}
-        </div>
-
-        <div className="mt-5 text-xs text-muted font-audiowide">
-          hover numa skill para realçar
         </div>
       </div>
     </section>

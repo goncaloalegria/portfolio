@@ -1,56 +1,134 @@
-// Hero.tsx (COMPLETO)
+"use client";
+
 import Image from "next/image";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 export default function Hero() {
+  // Valores para o efeito 3D
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+
+  // Molas para suavizar o movimento
+  const springX = useSpring(mouseX, { stiffness: 150, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 150, damping: 20 });
+
+  // Transforma as coordenadas do rato em graus de rotação (-15 a 15 graus)
+  const rotateX = useTransform(springY, [0, 1], [15, -15]);
+  const rotateY = useTransform(springX, [0, 1], [-15, 15]);
+
+  // Transforma as coordenadas para mover o brilho (reflexo)
+  const glareX = useTransform(springX, [0, 1], [-100, 200]);
+  const glareY = useTransform(springY, [0, 1], [-100, 200]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseXPos = e.clientX - rect.left;
+    const mouseYPos = e.clientY - rect.top;
+
+    mouseX.set(mouseXPos / width);
+    mouseY.set(mouseYPos / height);
+  };
+
+  const handleMouseLeave = () => {
+    // Volta ao centro quando o rato sai
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  };
+
   return (
     <section
       id="home"
       className="min-h-screen pt-24 md:pt-28 grid place-items-center relative overflow-hidden px-4"
     >
       <div className="w-full max-w-6xl mx-auto grid md:grid-cols-[1.15fr_.85fr] gap-10 items-center relative z-10">
+        
+        {/* Texto da Esquerda */}
         <div className="text-center md:text-left">
-          <h1 className="glitch font-orbitron font-black text-accent mb-4 uppercase leading-[0.95] tracking-[0.06em] text-[clamp(2.4rem,5.2vw,4.9rem)]">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="glitch font-orbitron font-black text-accent mb-4 uppercase leading-[0.95] tracking-[0.06em] text-[clamp(2.4rem,5.2vw,4.9rem)]"
+          >
             Gonçalo Alegria
-          </h1>
+          </motion.h1>
 
-          <p className="text-base sm:text-lg text-muted mb-8 max-w-xl mx-auto md:mx-0">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="text-base sm:text-lg text-muted mb-8 max-w-xl mx-auto md:mx-0"
+          >
             Estudante de <strong className="text-text">Engenharia Informática</strong>.
-          </p>
+          </motion.p>
 
-          <div className="flex gap-3 sm:gap-4 flex-wrap justify-center md:justify-start">
-            <a
-              href="#sobre"
-              className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-accent/30 hover:bg-accent/10 transition font-audiowide text-text"
-            >
-              Sobre
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="flex gap-3 sm:gap-4 flex-wrap justify-center md:justify-start items-center"
+          >
+            {/* Botão 1: Sobre (Efeito de varrimento de luz) */}
+            <a href="#sobre" className="relative group px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-accent/30 bg-[#101829]/50 hover:border-accent/80 transition-all duration-300 font-audiowide text-sm sm:text-base text-text overflow-hidden shadow-lg hover:shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+              <span className="relative z-10">Sobre</span>
+              {/* Luz que passa no hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out" />
             </a>
-            <a
-              href="#portfolio"
-              className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-accent/20 border border-accent/30 text-text hover:shadow-[0_0_22px_rgba(168,85,247,0.25)] transition font-audiowide hover:-translate-y-1"
-            >
-              Ver Projetos
+
+            {/* Botão 2: Ver Projetos (Primário com glow forte) */}
+            <a href="#portfolio" className="relative group px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-accent/20 border border-accent/50 text-text shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:bg-accent/30 hover:-translate-y-1 transition-all duration-300 font-audiowide text-sm sm:text-base overflow-hidden">
+              <span className="relative z-10">Ver Projetos</span>
+              {/* Fundo radial suave que aparece no hover */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.5)_0%,transparent_100%)] transition-opacity duration-300" />
             </a>
-            <a
-              href="#contacto"
-              className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-transparent hover:text-accent transition font-audiowide"
-            >
+
+            {/* Botão 3: Contacto (Minimalista com detalhe interativo) */}
+            <a href="#contacto" className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-muted hover:text-accent transition-all duration-300 font-audiowide text-sm sm:text-base flex items-center gap-2 group">
               Contacto
+              {/* Linha que cresce ao passar o rato */}
+              <span className="w-0 h-[2px] bg-accent transition-all duration-300 group-hover:w-4 rounded-full shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
             </a>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="flex justify-center md:justify-end">
-          <div className="relative w-[240px] sm:w-[280px] md:w-[340px] lg:w-[380px] aspect-square rounded-3xl overflow-hidden border border-accent/20 shadow-[0_14px_50px_rgba(0,0,0,0.5)] bg-panel/30">
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent mix-blend-overlay" />
-            <Image
-              src="/perfil.jpeg"
-              alt="Gonçalo Alegria"
-              fill
-              sizes="(max-width: 640px) 280px, (max-width: 768px) 340px, (max-width: 1024px) 380px, 420px"
-              className="object-cover hover:scale-105 transition duration-500 filter brightness-90 contrast-105"
-              priority
+        {/* Imagem 3D da Direita (INTACTA!) */}
+        <div className="flex justify-center md:justify-end perspective-[1000px]">
+          <motion.div
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="relative w-[240px] sm:w-[280px] md:w-[340px] lg:w-[380px] aspect-square rounded-3xl cursor-pointer"
+          >
+            {/* O Cartão em si */}
+            <div className="absolute inset-0 rounded-3xl overflow-hidden border border-accent/30 shadow-[0_20px_60px_rgba(168,85,247,0.25)] bg-panel/30">
+              
+              {/* Filtro Cyberpunk Base */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-accent/30 via-transparent to-accent-2/10 mix-blend-overlay z-10" />
+              
+              <Image
+                src="/perfil.jpeg"
+                alt="Gonçalo Alegria"
+                fill
+                sizes="(max-width: 640px) 280px, (max-width: 768px) 340px, (max-width: 1024px) 380px, 420px"
+                className="object-cover transition-transform duration-700 filter brightness-90 contrast-110"
+                priority
+              />
+
+              {/* Reflexo Dinâmico (Glare) */}
+              <motion.div
+                style={{ x: glareX, y: glareY }}
+                className="absolute inset-0 w-[200%] h-[200%] -top-1/2 -left-1/2 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.15)_0%,transparent_50%)] pointer-events-none z-20 mix-blend-screen"
+              />
+            </div>
+
+            {/* Sombra 3D Flutuante (por baixo do cartão) */}
+            <motion.div 
+              style={{ translateZ: -50 }}
+              className="absolute -inset-4 bg-accent/20 blur-[40px] rounded-3xl -z-10 opacity-50"
             />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

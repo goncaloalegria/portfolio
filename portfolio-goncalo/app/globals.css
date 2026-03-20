@@ -25,7 +25,7 @@
 }
 
 /* CONFIGURAÇÃO DO TEMA (TAILWIND v4) 
-  Isto substitui o ficheiro tailwind.config.ts
+   Isto substitui o ficheiro tailwind.config.ts
 */
 @theme {
   /* Fontes */
@@ -46,8 +46,7 @@
   --radius-radius: 16px;
 }
 
-/* CSS GLOBAL E UTILITÁRIOS
-*/
+/* CSS GLOBAL E UTILITÁRIOS */
 
 /* O Light Mode muda as variáveis de cor */
 @media (prefers-color-scheme: light) {
@@ -116,4 +115,41 @@ body {
   width: 100%;
   background: linear-gradient(90deg, transparent, rgba(168,85,247,0.35), transparent);
   animation: scan-sweep 3s infinite;
+}
+
+.ai-circuit-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23a855f7' stroke-width='0.5' stroke-opacity='0.1'%3E%3Cpath d='M50 0H20c-5.523 0-10 4.477-10 10v30c0 5.523 4.477 10 10 10h30c5.523 0 10-4.477 10-10V10c0-5.523-4.477-10-10-10zM10 80V50c0-5.523 4.477-10 10-10h30c5.523 0 10 4.477 10 10v30'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* =========================================
+   SCROLLBAR GLOBAL (Webkit)
+   ========================================= */
+
+/* Largura da barra inteira */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* O fundo da calha por onde a barra desliza */
+::-webkit-scrollbar-track {
+  background: #080a10; /* O mesmo tom escuro que usámos no fundo do teu terminal */
+  border-left: 1px solid rgba(168, 85, 247, 0.1); /* Uma linha muito subtil a separar */
+}
+
+/* A barra que se move (Thumb) */
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.4); /* O teu Roxo (Accent) com transparência */
+  border-radius: 8px; /* Cantos arredondados */
+  border: 2px solid #080a10; /* Cria um efeito de "padding" à volta da barra */
+}
+
+/* Quando passas o rato por cima da barra */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.8); /* Roxo mais forte e aceso */
+}
+
+/* Para o Firefox (que usa regras diferentes do Chrome/Edge/Safari) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 85, 247, 0.5) #080a10;
 }

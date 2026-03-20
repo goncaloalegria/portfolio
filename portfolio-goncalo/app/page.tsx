@@ -7,6 +7,7 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import EasterEgg from "@/components/EasterEgg";
 import BackToTop from "@/components/BackToTop";
+import SectionReveal from "@/components/SectionReveal";
 
 export default function Home() {
   return (
@@ -14,12 +15,29 @@ export default function Home() {
       <EasterEgg />
       <Header />
 
-      <Hero />
-      <About />
-      <Experience />
-      <Skills />
-      <Projects />
-      <Contact />
+      <SectionReveal delay={0.1}>
+        <Hero />
+      </SectionReveal>
+
+      <SectionReveal delay={0.2}>
+        <About />
+      </SectionReveal>
+
+      <SectionReveal delay={0.2}>
+        <Experience />
+      </SectionReveal>
+
+      <SectionReveal delay={0.2}>
+        <Skills />
+      </SectionReveal>
+
+      <SectionReveal delay={0.2}>
+        <Projects />
+      </SectionReveal>
+
+      <SectionReveal delay={0.2}>
+        <Contact />
+      </SectionReveal>
 
       <footer className="py-8 text-center text-muted font-audiowide border-t border-accent/10 bg-[#080a10]/50">
         <p>

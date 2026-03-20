@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTheme } from "next-themes";
 import Link from "next/link";
-import { Globe, Moon, Search, Sun } from "lucide-react";
+import { Globe, Search } from "lucide-react";
 import CommandPalette, { type PaletteAction } from "@/components/CommandPalette";
 
 export default function Header() {
@@ -12,7 +11,6 @@ export default function Header() {
   const [progress, setProgress] = useState(0);
   const [paletteOpen, setPaletteOpen] = useState(false);
 
-  const { theme, setTheme } = useTheme();
   const lastFocusRef = useRef<HTMLElement | null>(null);
   const shellRef = useRef<HTMLDivElement | null>(null);
 
@@ -93,8 +91,8 @@ export default function Header() {
       }
       setPaletteOpen(false);
     };
-
-    return [
+    
+      return [
       { label: "Ir para: Home", keywords: "home topo", run: go("home"), hint: "Enter" },
       { label: "Ir para: Sobre", keywords: "sobre about", run: go("sobre"), hint: "Enter" },
       { label: "Ir para: Experiência", keywords: "experiencia percurso", run: go("experiencia"), hint: "Enter" },
@@ -102,24 +100,14 @@ export default function Header() {
       { label: "Ir para: Projetos", keywords: "projetos portfolio", run: go("portfolio"), hint: "Enter" },
       { label: "Ir para: Contacto", keywords: "contacto email", run: go("contacto"), hint: "Enter" },
 
-      { label: "Abrir GitHub", keywords: "github repo", run: open("#"), hint: "↗" },
-      { label: "Abrir LinkedIn", keywords: "linkedin perfil", run: open("#"), hint: "↗" },
-      { label: "Download CV", keywords: "cv curriculo", run: open("/cv.pdf"), hint: "↗" },
+      // OS TEUS LINKS REAIS AQUI:
+      { label: "Abrir GitHub", keywords: "github repo codigo", run: open("https://github.com/goncaloalegria"), hint: "↗" },
+      { label: "Abrir LinkedIn", keywords: "linkedin perfil emprego", run: open("https://www.linkedin.com/in/goncaloalegria004/"), hint: "↗" },
+      { label: "Abrir Instagram", keywords: "instagram fotos social", run: open("https://www.instagram.com/goncalooalegria/"), hint: "↗" },
+      { label: "Ligar / WhatsApp", keywords: "telefone telemovel ligar numero", run: open("tel:+351938877605"), hint: "↗" },
       { label: "Copiar Email", keywords: "email copiar", run: copy("g.alegria.set@gmail.com"), hint: "⌘C" },
-
-      {
-        label: mounted && theme === "light" ? "Mudar para Dark" : "Mudar para Light",
-        keywords: "tema dark light",
-        run: () => {
-          setTheme(mounted && theme === "light" ? "dark" : "light");
-          setPaletteOpen(false);
-        },
-        hint: "Enter",
-      },
     ];
-  }, [mounted, theme, setTheme]);
-
-  const isLight = mounted && theme === "light";
+  }, []);
 
   const shellInlineStyle: React.CSSProperties = scrolled
     ? {
@@ -136,9 +124,9 @@ export default function Header() {
       };
 
   const shellClass = scrolled
-    ? "glass-panel shadow-[0_18px_60px_rgba(0,0,0,0.45)] border border-accent/15"
+    ? "glass-panel backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.45)] border border-accent/15"
     : "bg-transparent border border-transparent";
-
+  
   const innerPad = scrolled ? "px-4 md:px-6" : "px-4 md:px-8";
 
   return (
@@ -194,7 +182,7 @@ export default function Header() {
                 scrolled ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none",
               ].join(" ")}
             >
-              <span className="font-orbitron uppercase tracking-[0.20em] text-[16px] md:text-[17px] text-accent">
+              <span className="font-orbitron uppercase tracking-[0.20em] text-[16px] md:text-[19px] text-accent">
                 Gonçalo Alegria
               </span>
             </div>
@@ -223,24 +211,6 @@ export default function Header() {
                 className="w-10 h-10 grid place-items-center rounded-2xl bg-panel/25 border border-accent/15 hover:border-accent/35 hover:bg-panel/35 transition text-text"
               >
                 <Globe size={18} />
-              </button>
-
-              <button
-                onClick={() => setTheme(isLight ? "dark" : "light")}
-                aria-label="Alternar tema"
-                className="w-16 h-10 relative rounded-full border border-accent/20 bg-panel/25 hover:bg-panel/35 transition hover:shadow-[0_0_15px_rgba(168,85,247,0.18)]"
-              >
-                <div
-                  className={[
-                    "absolute top-1 left-1 w-7 h-7 rounded-full",
-                    "bg-gradient-to-b from-accent to-accent-2 shadow-md",
-                    "flex items-center justify-center",
-                    "transition-transform duration-300",
-                    isLight ? "translate-x-6" : "translate-x-0",
-                  ].join(" ")}
-                >
-                  {isLight ? <Sun size={14} className="text-white" /> : <Moon size={14} className="text-white" />}
-                </div>
               </button>
             </div>
           </div>

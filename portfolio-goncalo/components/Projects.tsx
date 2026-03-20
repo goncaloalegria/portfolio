@@ -1,129 +1,63 @@
-// components/Projects.tsx (COMPLETO)
+// components/Projects.tsx
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { projects } from "@/lib/data";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X, Github, Layers, Code2, ShoppingCart, Building2 } from "lucide-react";
+import { X, Github, ExternalLink } from "lucide-react";
+import DecryptTitle from "@/components/DecryptTitle";
 
 type Project = (typeof projects)[number];
 
 function FeaturedCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className="group relative aspect-video w-full overflow-hidden rounded-2xl border border-accent/15 bg-panel/10 hover:border-accent/30 hover:-translate-y-1 transition focus:outline-none focus:ring-2 ring-accent"
-    >
-      <Image
-        src={p.cover}
-        alt={p.title}
-        fill
-        sizes="(max-width: 1024px) 100vw, 33vw"
-        className="object-cover transition duration-700 group-hover:scale-[1.03] group-hover:brightness-[0.78]"
-        priority
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
-      <div className="absolute left-4 right-4 bottom-3">
-        <div className="font-audiowide text-[15px] text-white drop-shadow">{p.title}</div>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {p.languages.slice(0, 3).map((l) => (
-            <span
-              key={l}
-              className="px-2.5 py-1 text-[11px] text-white/85 border border-white/10 bg-white/5 rounded-full"
-            >
-              {l}
-            </span>
-          ))}
-        </div>
-      </div>
-    </button>
-  );
-}
-
-function Tile({
-  p,
-  onOpen,
-  dim,
-}: {
-  p: Project;
-  onOpen: () => void;
-  dim?: boolean;
-}) {
   const reduceMotion = useReducedMotion();
-  const hoverAnim = reduceMotion || dim ? undefined : { y: -2 };
-
   return (
     <motion.button
+      layoutId={reduceMotion ? undefined : `project-container-${p.id}`}
       type="button"
       onClick={onOpen}
-      className={[
-        "group relative w-full h-full overflow-hidden bg-[#070913] focus:outline-none focus:ring-2 ring-accent",
-        dim ? "opacity-35 saturate-75" : "opacity-100",
-      ].join(" ")}
-      whileHover={hoverAnim}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
+      className="group relative aspect-video w-full overflow-hidden rounded-2xl p-[1px] text-left focus:outline-none focus:ring-2 ring-accent"
+      whileHover={reduceMotion ? undefined : { y: -4 }}
     >
-      <Image
-        src={p.cover}
-        alt={p.title}
-        fill
-        sizes="(max-width: 1024px) 100vw, 60vw"
-        className="object-cover transition duration-700 group-hover:scale-[1.02] group-hover:brightness-[0.82]"
-      />
+      <div className="absolute inset-0 bg-accent/15 rounded-2xl transition-colors group-hover:bg-accent/30" />
+      
+      {!reduceMotion && (
+        <div className="absolute top-1/2 left-1/2 h-[3000px] w-[3000px] -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_50%,#00f2fe_80%,var(--color-accent)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      )}
+      
+      <div className="relative h-full w-full rounded-[15px] overflow-hidden bg-panel/90 backdrop-blur-xl">
+        <Image src={p.cover} alt={p.title} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition duration-700 group-hover:scale-[1.03] group-hover:brightness-[0.78]" priority />
+        
+        <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          <motion.div
+            animate={{ translateY: ["-100%", "100%"] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#00f2fe] to-transparent shadow-[0_0_10px_#00f2fe]"
+          />
+        </div>
 
-      {/* overlay “normal” */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none" />
-
-      {/* overlay extra para DIM (escurecer o que não pertence) */}
-      {dim && <div className="absolute inset-0 bg-black/30 pointer-events-none" />}
-
-      <div className="absolute left-4 right-4 bottom-3">
-        <div className="font-audiowide text-[13px] md:text-[14px] text-white drop-shadow">
-          {p.title}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+        <div className="absolute left-5 right-5 bottom-4 z-30">
+          <motion.div layoutId={reduceMotion ? undefined : `project-title-${p.id}`} className="font-audiowide text-[18px] text-white drop-shadow mb-2">{p.title}</motion.div>
+          
+          <div className="flex flex-wrap gap-2">
+            {p.languages.slice(0, 3).map((l) => (<span key={l} className="px-2.5 py-1 text-[11px] text-white/90 border border-white/20 bg-white/10 rounded-full backdrop-blur-sm">{l}</span>))}
+          </div>
         </div>
       </div>
     </motion.button>
   );
 }
 
-function chunk<T>(arr: T[], size: number): T[][] {
-  const out: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
-}
-
-/**
- * Categorias (para o filtro):
- * - Se no data.ts adicionares `type: "Web Apps"` ou `types: ["Web Apps","Enterprise"]`, ele usa isso.
- * - Se não existir, tenta inferir pelas `languages`.
- */
 function getTypes(p: any): string[] {
-  if (Array.isArray(p?.types) && p.types.length) return p.types;
-  if (typeof p?.type === "string" && p.type) return [p.type];
-  if (typeof p?.category === "string" && p.category) return [p.category];
-
   const langs = (p?.languages ?? []).map((x: string) => String(x).toLowerCase());
   const has = (s: string) => langs.some((l: string) => l.includes(s.toLowerCase()));
-
   const out: string[] = [];
-
-  // Web Apps
-  if (has("react") || has("next") || has("tailwind") || has("typescript") || has("javascript") || has("html") || has("css") || has("web")) {
-    out.push("Web Apps");
-  }
-
-  // eCommerce
-  if (has("ecommerce") || has("shop") || has("stripe") || has("cart")) {
-    out.push("eCommerce");
-  }
-
-  // Enterprise
-  if (has("enterprise") || has("kubernetes") || has("docker") || has("microservices") || has("ci/cd")) {
-    out.push("Enterprise");
-  }
-
+  if (has("react") || has("next") || has("tailwind") || has("javascript") || has("web")) out.push("Web");
+  if (has("c") || has("linux") || has("bash") || has("sistemas")) out.push("Systems");
+  if (has("ai") || has("python")) out.push("AI");
   if (out.length === 0) out.push("Other");
   return Array.from(new Set(out));
 }
@@ -131,6 +65,10 @@ function getTypes(p: any): string[] {
 export default function Projects() {
   const reduceMotion = useReducedMotion();
   const [selected, setSelected] = useState<Project | null>(null);
+  const [activeTab, setActiveTab] = useState<string>("All");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const { featured, rest } = useMemo(() => {
     const f = projects.filter((p) => (p as any).featured).slice(0, 3);
@@ -139,226 +77,150 @@ export default function Projects() {
     return { featured: f, rest: r };
   }, []);
 
-  // --- FILTRO (só para os regulares) ---
-  const allTypes = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const p of rest) {
-      for (const t of getTypes(p)) counts.set(t, (counts.get(t) ?? 0) + 1);
-    }
-    return counts;
+  const allCategories = useMemo(() => {
+    const cats = new Set<string>();
+    rest.forEach(p => getTypes(p).forEach(t => cats.add(t)));
+    return ["All", ...Array.from(cats)];
   }, [rest]);
 
-  const filterOptions = useMemo(() => {
-    const preferred = ["Web Apps", "eCommerce", "Enterprise", "Other"];
-    const presentPreferred = preferred.filter((t) => allTypes.has(t));
-    const extra = Array.from(allTypes.keys()).filter((t) => !preferred.includes(t));
-    return ["All", ...presentPreferred, ...extra];
-  }, [allTypes]);
-
-  const [active, setActive] = useState<string>("All");
-
-  const isMatch = (p: Project) => {
-    if (active === "All") return true;
-    return getTypes(p).includes(active);
-  };
-
-  const blocks = useMemo(() => chunk(rest, 8), [rest]);
+  const filteredRest = useMemo(() => {
+    if (activeTab === "All") return rest;
+    return rest.filter(p => getTypes(p).includes(activeTab));
+  }, [activeTab, rest]);
 
   useEffect(() => {
     if (!selected) return;
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelected(null);
-    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelected(null); };
     document.addEventListener("keydown", onKey);
-
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
+    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
   }, [selected]);
-
-  // Puzzle por bloco (3 colunas com mesma largura, alturas variam)
-  const TEMPLATE_AREAS =
-    `"a b c"
-     "d b f"
-     "d e f"
-     "g e h"` as const;
-
-  const slots = ["a", "b", "c", "d", "f", "e", "g", "h"] as const;
-
-  const iconFor = (key: string) => {
-    switch (key) {
-      case "All":
-        return <Layers size={16} className="opacity-90" />;
-      case "Web Apps":
-        return <Code2 size={16} className="opacity-90" />;
-      case "eCommerce":
-        return <ShoppingCart size={16} className="opacity-90" />;
-      case "Enterprise":
-        return <Building2 size={16} className="opacity-90" />;
-      default:
-        return <Layers size={16} className="opacity-90" />;
-    }
-  };
 
   return (
     <section id="portfolio" className="py-20 container mx-auto px-4 scroll-mt-24">
       <div className="mb-8">
-        <h2 className="text-3xl md:text-4xl font-audiowide text-accent scan-effect">Projetos</h2>
-        <p className="text-muted mt-2">Destaques e uma galeria “puzzle”.</p>
+        <DecryptTitle text="Projetos" className="text-3xl md:text-4xl" />
+        <p className="text-muted mt-2">Destaques principais e portefólio completo.</p>
       </div>
 
-      {/* 3 destacados (não são afetados pelo filtro) */}
       {featured.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {featured.map((p) => (
-            <FeaturedCard key={p.id} p={p} onOpen={() => setSelected(p)} />
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {featured.map((p) => <FeaturedCard key={p.id} p={p} onOpen={() => setSelected(p)} />)}
         </div>
       )}
 
-      {/* Barra de filtro (apenas para regulares) */}
-      <div className="mb-6">
-        <div className="inline-flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-panel/30 p-2">
-          {filterOptions.map((opt) => {
-            const activeBtn = active === opt;
-            const label = opt === "All" ? "Tudo" : opt;
-
-            return (
-              <button
-                key={opt}
-                type="button"
-                onClick={() => setActive(opt)}
-                aria-pressed={activeBtn}
-                className={[
-                  "flex items-center gap-2 rounded-full px-4 py-2 text-sm transition",
-                  "border",
-                  activeBtn
-                    ? "bg-accent/15 border-accent/30 text-text"
-                    : "bg-transparent border-transparent text-muted hover:text-text hover:bg-white/5 hover:border-white/10",
-                ].join(" ")}
-              >
-                {iconFor(opt)}
-                <span className="font-audiowide">{label}</span>
-              </button>
-            );
-          })}
+      <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <h3 className="text-xl font-audiowide text-white/80">Arquivo de Projetos</h3>
+        <div className="inline-flex flex-wrap gap-2 p-1.5 bg-panel/30 border border-white/10 rounded-2xl w-fit">
+          {allCategories.map(cat => (
+            <button key={cat} onClick={() => setActiveTab(cat)} className={`px-4 py-2 rounded-xl text-sm font-audiowide transition-all ${activeTab === cat ? "bg-accent/20 text-white border border-accent/40 shadow-sm" : "text-muted hover:text-text border border-transparent hover:bg-white/5"}`}>{cat}</button>
+          ))}
         </div>
       </div>
 
-      {/* MOBILE: lista simples */}
-      <div className="grid gap-4 md:hidden">
-        {rest.map((p) => (
-          <div key={p.id} className="aspect-video bg-white/10 p-[2px]">
-            <div className="h-full">
-              <Tile p={p} onOpen={() => setSelected(p)} dim={!isMatch(p)} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* DESKTOP: puzzle em blocos */}
-      <div className="hidden md:grid gap-6">
-        {blocks.map((b, bi) => (
-          <div key={bi} className="bg-white/10 p-[2px]">
-            <div
-              className="grid grid-cols-3 gap-[2px] bg-white/10
-                         grid-rows-[repeat(4,150px)]
-                         lg:grid-rows-[repeat(4,170px)]
-                         xl:grid-rows-[repeat(4,185px)]"
-              style={{ gridTemplateAreas: TEMPLATE_AREAS }}
+      {/* NOVA VISUALIZAÇÃO: CARTÕES HORIZONTAIS */}
+      <motion.div layout className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <AnimatePresence mode="popLayout">
+          {filteredRest.map((p) => (
+            <motion.button 
+              layout 
+              layoutId={reduceMotion ? undefined : `project-container-${p.id}`} 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }} 
+              transition={{ duration: 0.3 }} 
+              key={p.id} 
+              onClick={() => setSelected(p)} 
+              className="group relative flex w-full overflow-hidden rounded-2xl p-[1px] text-left focus:outline-none focus:ring-2 ring-accent"
+              whileHover={reduceMotion ? undefined : { y: -2 }}
             >
-              {slots.map((area, idx) => {
-                const p = b[idx];
-                if (!p) return <div key={area} style={{ gridArea: area }} className="bg-[#070913]" />;
+              
+              {/* Borda Glow Base e LUZ ROTATIVA */}
+              <div className="absolute inset-0 bg-accent/10 rounded-2xl transition-colors group-hover:bg-accent/30" />
+              {!reduceMotion && (
+                <div className="absolute top-1/2 left-1/2 h-[3000px] w-[3000px] -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_50%,#00f2fe_80%,var(--color-accent)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              )}
 
-                return (
-                  <div key={p.id} style={{ gridArea: area }}>
-                    <Tile p={p} onOpen={() => setSelected(p)} dim={!isMatch(p)} />
+              {/* Miolo do Cartão (Horizontal) */}
+              <div className="relative w-full rounded-[15px] bg-panel/95 backdrop-blur-xl overflow-hidden flex flex-col sm:flex-row items-stretch">
+                
+                {/* Imagem (Thumbnail à Esquerda em ecrãs grandes, Topo em mobile) */}
+                <div className="relative w-full sm:w-2/5 aspect-video sm:aspect-auto overflow-hidden bg-black shrink-0 border-b sm:border-b-0 sm:border-r border-accent/10">
+                  <Image src={p.cover} alt={p.title} fill className="object-cover group-hover:scale-105 transition duration-700 opacity-70 group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-accent/10 group-hover:bg-transparent transition-colors duration-500" />
+                </div>
+                
+                {/* Texto e Tags (À Direita) */}
+                <div className="p-6 sm:p-7 flex-grow flex flex-col">
+                  <div className="flex justify-between items-start mb-2">
+                    <motion.h3 layoutId={reduceMotion ? undefined : `project-title-${p.id}`} className="text-xl font-audiowide text-white group-hover:text-[#00f2fe] transition-colors">{p.title}</motion.h3>
+                    <ExternalLink size={18} className="text-muted group-hover:text-accent transition-colors opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transform duration-300" />
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
+                  
+                  <p className="text-sm text-muted line-clamp-2 mb-6">{p.description}</p>
+                  
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {p.languages.slice(0, 4).map(l => (
+                      <span key={l} className="px-2.5 py-1 text-[10px] text-white/80 border border-white/10 bg-white/5 rounded-full uppercase tracking-wider">{l}</span>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+              
+            </motion.button>
+          ))}
+        </AnimatePresence>
+      </motion.div>
 
       {/* MODAL */}
-      <AnimatePresence>
-        {selected && (
-          <>
-            <motion.div
-              className="fixed inset-0 z-[120] bg-black/55 backdrop-blur-sm"
-              initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-              onClick={() => setSelected(null)}
-            />
-
-            <motion.div
-              className="fixed inset-0 z-[130] flex items-center justify-center p-4 md:p-6"
-              initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 260, damping: 24 }}
-              onClick={() => setSelected(null)}
-            >
-              <div
-                className="bg-[#080a10] border border-accent/20 rounded-2xl w-full max-w-6xl max-h-[92vh] overflow-y-auto relative shadow-2xl flex flex-col md:flex-row md:min-h-[560px]"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={() => setSelected(null)}
-                  className="absolute top-4 right-4 z-10 p-2.5 bg-panel/60 rounded-lg hover:bg-accent/20 transition"
-                  aria-label="Fechar"
-                >
-                  <X className="text-white" />
-                </button>
-
-                <div className="w-full md:w-3/5 h-[360px] md:h-auto relative bg-black/50">
-                  <Image src={selected.demo} alt={selected.title} fill className="object-contain" />
-                </div>
-
-                <div className="w-full md:w-2/5 p-6 md:p-10 flex flex-col">
-                  <h3 className="text-3xl md:text-4xl font-audiowide text-white mb-4">
-                    {selected.title}
-                  </h3>
-                  <p className="text-muted leading-relaxed mb-6">{selected.description}</p>
-
-                  <div className="mb-auto">
-                    <h4 className="font-audiowide text-sm text-accent mb-2">Tecnologias</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selected.languages.map((l) => (
-                        <span
-                          key={l}
-                          className="px-3 py-1 rounded-full border border-accent/20 bg-panel text-xs text-text"
-                        >
-                          {l}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-6 border-t border-accent/10">
-                    <a
-                      href={selected.repoUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-2 py-3 font-audiowide bg-accent/10 border border-accent/30 hover:bg-accent/20 transition text-text rounded-xl"
-                    >
-                      <Github size={18} /> Repositório
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {mounted && createPortal(
+        <AnimatePresence>
+          {selected && (
+             <>
+             <motion.div 
+               className="fixed inset-0 bg-black/60 backdrop-blur-md" 
+               style={{ zIndex: 9998 }}
+               initial={{ opacity: 0 }} 
+               animate={{ opacity: 1 }} 
+               exit={{ opacity: 0 }} 
+               onClick={() => setSelected(null)} 
+             />
+             
+             <div className="fixed inset-0 flex items-center justify-center p-4 md:p-6 pointer-events-none" style={{ zIndex: 9999 }}>
+               <motion.div 
+                 layoutId={reduceMotion ? undefined : `project-container-${selected.id}`} 
+                 className="bg-[#080a10] border border-accent/20 rounded-2xl w-full max-w-6xl max-h-[92vh] overflow-y-auto relative shadow-2xl flex flex-col md:flex-row md:min-h-[560px] pointer-events-auto" 
+                 style={{ zIndex: 9999 }} 
+                 onClick={(e) => e.stopPropagation()}
+               >
+                 <button onClick={() => setSelected(null)} className="absolute top-4 right-4 z-10 p-2.5 bg-panel/60 backdrop-blur-md rounded-lg hover:bg-accent/20 transition border border-accent/10 hover:border-accent/40"><X className="text-white" /></button>
+                 <div className="w-full md:w-3/5 h-[360px] md:h-auto relative bg-black/50 overflow-hidden">
+                   <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.4 }} className="w-full h-full relative">
+                     <Image src={selected.demo} alt={selected.title} fill className="object-cover md:object-contain" />
+                   </motion.div>
+                 </div>
+                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="w-full md:w-2/5 p-6 md:p-10 flex flex-col">
+                   <motion.h3 layoutId={reduceMotion ? undefined : `project-title-${selected.id}`} className="text-3xl md:text-4xl font-audiowide text-white mb-4">{selected.title}</motion.h3>
+                   <p className="text-muted leading-relaxed mb-6">{selected.description}</p>
+                   <div className="mb-auto">
+                     <h4 className="font-audiowide text-sm text-accent mb-3">Tecnologias</h4>
+                     <div className="flex flex-wrap gap-2">
+                       {selected.languages.map((l) => (<span key={l} className="px-3 py-1.5 rounded-full border border-accent/20 bg-panel/50 text-xs text-text">{l}</span>))}
+                     </div>
+                   </div>
+                   <div className="mt-8 pt-6 border-t border-accent/10">
+                     <a href={selected.repoUrl} target="_blank" rel="noreferrer" className="w-full inline-flex items-center justify-center gap-2 py-3.5 font-audiowide bg-accent/10 border border-accent/30 hover:bg-accent/20 transition text-text rounded-xl"><Github size={18} /> Repositório</a>
+                   </div>
+                 </motion.div>
+               </motion.div>
+             </div>
+             </>
+          )}
+        </AnimatePresence>, document.body
+      )}
     </section>
   );
 }

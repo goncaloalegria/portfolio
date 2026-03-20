@@ -127,3 +127,10 @@ export const skills = [
   { name: "C", level: 68 },
   { name: "Web", level: 74 },
 ];
+
+export const socialLinks = {
+  email: "g.alegria.set@gmail.com",
+  github: "https://github.com/teu-username", // Substitui pelo teu GitHub
+  linkedin: "https://linkedin.com/in/teu-linkedin", // Substitui pelo teu LinkedIn
+  cv: "/cv.pdf", // Garante que tens o cv.pdf na pasta public
+};
