@@ -39,12 +39,14 @@ export default function Home() {
         <Contact />
       </SectionReveal>
 
-      <footer className="py-8 text-center text-muted font-audiowide border-t border-accent/10 bg-[#080a10]/50">
-        <p>
-          Player 1: <span className="text-accent">Gonçalo Alegria</span>
-        </p>
-        <p className="text-sm opacity-60 mt-1">feito com código e café ☕</p>
-      </footer>
+      <footer className="py-8 text-center text-muted font-audiowide border-t border-accent/15 bg-bg/50">
+  <p>
+    Player 1: <span className="text-accent">Gonçalo Alegria</span>
+  </p>
+  <p className="text-sm opacity-70 mt-1">
+    © {new Date().getFullYear()} — feito com código e café ☕
+  </p>
+</footer>
 
       <BackToTop />
     </main>

@@ -16,9 +16,9 @@ export default function CyberGrid() {
         className="w-[200vw] h-[55vh]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(168,85,247,0.5) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(168,85,247,0.5) 1px, transparent 1px)
-          `,
+  linear-gradient(to right, color-mix(in srgb, var(--color-accent), transparent 50%) 1px, transparent 1px),
+  linear-gradient(to bottom, color-mix(in srgb, var(--color-accent), transparent 50%) 1px, transparent 1px)
+`,
           backgroundSize: "60px 60px",
           transformOrigin: "bottom center",
           // Desvanece suavemente desde o horizonte (topo) até ao ecrã (baixo)

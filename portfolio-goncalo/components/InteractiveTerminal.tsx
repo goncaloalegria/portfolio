@@ -89,15 +89,14 @@ export default function InteractiveTerminal() {
 
   return (
     // ESTRUTURA BLINDADA: Altura exata de 380px, sem Flexbox a interferir na altura
-    <div className="relative w-full h-[380px] bg-[#080a10]/80 rounded-[15px] font-mono text-sm md:text-base cursor-text overflow-hidden border border-transparent">
+    <div className="relative w-full h-[380px] bg-[#080a10] rounded-[15px] font-mono text-sm md:text-base cursor-text overflow-hidden border border-transparent">
       
       {/* Barra de Topo do Terminal - Colada ao topo com posição absoluta */}
       <div className="absolute top-0 left-0 right-0 h-12 bg-[#101829] px-4 flex gap-2 items-center border-b border-accent/20 z-20">
         <span className="w-3 h-3 rounded-full bg-[#ff5f56]" />
         <span className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
         <span className="w-3 h-3 rounded-full bg-[#27c93f]" />
-        <span className="ml-2 text-xs text-muted font-sans uppercase tracking-wider select-none">guest@galegria:~</span>
-      </div>
+        </div>
 
       {/* Corpo do Terminal - Começa examente a 48px do topo (abaixo da barra) e preenche o resto */}
       <div 

@@ -130,7 +130,9 @@ export const skills = [
 
 export const socialLinks = {
   email: "g.alegria.set@gmail.com",
-  github: "https://github.com/teu-username", // Substitui pelo teu GitHub
-  linkedin: "https://linkedin.com/in/teu-linkedin", // Substitui pelo teu LinkedIn
-  cv: "/cv.pdf", // Garante que tens o cv.pdf na pasta public
+  github: "https://github.com/goncaloalegria",
+  linkedin: "https://www.linkedin.com/in/goncaloalegria004/",
+  instagram: "https://www.instagram.com/goncalooalegria/",
+  phone: "tel:+351938877605",
+  cv: "/cv.pdf",
 };

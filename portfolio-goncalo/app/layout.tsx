@@ -5,9 +5,10 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import BackgroundLogo from "@/components/BackgroundLogo";
 import AiOrb from "@/components/AiOrb"; 
-import CyberGrid from "@/components/CyberGrid";
-import Particles from "@/components/Particles"; 
-
+import SmoothCursor from "@/components/SmoothCursor";
+import TracingBeam from "@/components/TracingBeam";
+import FloatingCode from "@/components/FloatingCode";
+import StarsBackground from "@/components/StarsBackground";
 
 // 1. Declaração das Fontes (isto é o que estava em falta!)
 const exo = Exo_2({ subsets: ["latin"], variable: "--font-exo", weight: ["400", "600", "800"] });
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     siteName: "Portefólio - Gonçalo Alegria",
     images: [
       {
-        url: "/og-image.png", // A imagem mágica que vai aparecer na partilha!
+        url: "/ogimage.png",
         width: 1200,
         height: 630,
         alt: "Preview do Portefólio de Gonçalo Alegria",
@@ -57,13 +58,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         
         <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
+          <SmoothCursor />
+          
           {/* Motor Visual */}
           
           <BackgroundLogo />
-          <CyberGrid />
-          <AiOrb /> 
-          <Particles /> 
-          
+          <AiOrb />  
+          <TracingBeam />
+<FloatingCode />
+<StarsBackground />
           {/* Conteúdo do Site */}
           <div className="relative z-10">{children}</div>
         </ThemeProvider>

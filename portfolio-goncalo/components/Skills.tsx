@@ -10,10 +10,10 @@ import GlowingCard from "@/components/GlowingCard";
 type Skill = (typeof skills)[number];
 
 function levelToRank(level: number) {
-  if (level >= 85) return { rank: "S", tone: "border-accent/45 bg-accent/10" };
-  if (level >= 75) return { rank: "A", tone: "border-accent/30 bg-panel/25" };
-  if (level >= 60) return { rank: "B", tone: "border-accent/20 bg-panel/20" };
-  return { rank: "C", tone: "border-accent/15 bg-panel/15" };
+  if (level >= 85) return { rank: "S", tone: "border-accent/50 bg-accent/15" };
+  if (level >= 75) return { rank: "A", tone: "border-accent/35 bg-accent/10" };
+  if (level >= 60) return { rank: "B", tone: "border-accent/25 bg-accent/5" };
+  return { rank: "C", tone: "border-accent/20 bg-panel/20" };
 }
 
 function categorize(name: string) {
@@ -67,15 +67,15 @@ export default function Skills() {
             <GlowingCard key={g.key} className="h-full">
               <div className="p-5 h-full flex flex-col">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="font-audiowide text-sm text-text">{g.key}</div>
-                  <div className="text-[11px] text-muted font-audiowide bg-panel/50 px-2 py-0.5 rounded-md border border-accent/10">{g.items.length}</div>
+                  <div className="font-audiowide text-sm text-text font-semibold">{g.key}</div>
+                  <div className="text-[11px] text-text font-audiowide bg-accent/15 px-2.5 py-1 rounded-lg border border-accent/25">{g.items.length}</div>
                 </div>
 
                 <div className="flex flex-col gap-3">
                   {g.items.map((s) => {
                     const { rank, tone } = levelToRank(s.level);
-                    const dim = active && active !== s.name ? "opacity-50" : "opacity-100";
-                    const hot = active === s.name ? "border-accent/45 shadow-[0_0_22px_rgba(168,85,247,0.18)]" : "";
+                    const dim = active && active !== s.name ? "opacity-40" : "opacity-100";
+                    const hot = active === s.name ? "border-accent/60 shadow-[0_0_22px_rgba(168,85,247,0.18)]" : "";
 
                     return (
                       <motion.button
@@ -91,18 +91,19 @@ export default function Skills() {
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
-                            <div className="font-audiowide text-[13px] text-text truncate">{s.name}</div>
-                            <div className="mt-1 text-[11px] text-muted leading-relaxed">
-                              {(proofBySkill[s.name] || ["Projeto/uso", "Projeto/uso"]).slice(0, 2).join(" • ")}
+                            <div className="font-audiowide text-[13px] text-text font-semibold truncate">{s.name}</div>
+                            <div className="mt-1 text-[11px] text-text leading-relaxed">
+                              {(proofBySkill[s.name] || ["Projeto/uso", "Projeto/uso"]).slice(0, 2).join(" · ")}
                             </div>
                           </div>
                           <div className="shrink-0 text-right">
-                            <div className="font-audiowide text-[11px] text-accent">{rank}</div>
-                            <div className="font-audiowide text-[11px] text-muted mt-0.5">{s.level}%</div>
+                            <div className="font-audiowide text-[12px] text-accent font-bold">{rank}</div>
+                            <div className="font-audiowide text-[12px] text-text/80 mt-0.5 font-semibold">{s.level}%</div>
                           </div>
                         </div>
-                        <div className="mt-3 h-[2px] rounded-full overflow-hidden bg-accent/10">
-                          <div className="h-full bg-gradient-to-r from-accent to-accent-2" style={{ width: `${s.level}%` }} />
+                        {/* Barra de progresso — altura fixa 4px para todas */}
+                        <div className="mt-3 h-[4px] rounded-full overflow-hidden bg-accent/15">
+                          <div className="h-full rounded-full bg-gradient-to-r from-accent to-accent-2" style={{ width: `${s.level}%` }} />
                         </div>
                       </motion.button>
                     );

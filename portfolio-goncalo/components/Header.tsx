@@ -2,13 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Globe, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import CommandPalette, { type PaletteAction } from "@/components/CommandPalette";
+import { socialLinks } from "@/lib/data";
+import AnimatedThemeToggler from "@/components/AnimatedThemeToggler";
 
 export default function Header() {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   const lastFocusRef = useRef<HTMLElement | null>(null);
@@ -17,34 +18,28 @@ export default function Header() {
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    let ticking = false;
+  let ticking = false;
 
-    const update = () => {
-      const y = window.scrollY || 0;
-      const doc = document.documentElement;
-      const max = Math.max(1, doc.scrollHeight - window.innerHeight);
-      const p = Math.min(100, Math.max(0, (y / max) * 100));
+  const update = () => {
+    setScrolled((window.scrollY || 0) > 64);
+    ticking = false;
+  };
 
-      setScrolled(y > 64);
-      setProgress(p);
-      ticking = false;
-    };
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
 
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    };
+  update();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", update);
 
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
+  return () => {
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("resize", update);
+  };
+}, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -91,21 +86,19 @@ export default function Header() {
       }
       setPaletteOpen(false);
     };
-    
-      return [
+
+    return [
       { label: "Ir para: Home", keywords: "home topo", run: go("home"), hint: "Enter" },
       { label: "Ir para: Sobre", keywords: "sobre about", run: go("sobre"), hint: "Enter" },
       { label: "Ir para: Experiência", keywords: "experiencia percurso", run: go("experiencia"), hint: "Enter" },
       { label: "Ir para: Skills", keywords: "skills tech", run: go("skills"), hint: "Enter" },
       { label: "Ir para: Projetos", keywords: "projetos portfolio", run: go("portfolio"), hint: "Enter" },
       { label: "Ir para: Contacto", keywords: "contacto email", run: go("contacto"), hint: "Enter" },
-
-      // OS TEUS LINKS REAIS AQUI:
-      { label: "Abrir GitHub", keywords: "github repo codigo", run: open("https://github.com/goncaloalegria"), hint: "↗" },
-      { label: "Abrir LinkedIn", keywords: "linkedin perfil emprego", run: open("https://www.linkedin.com/in/goncaloalegria004/"), hint: "↗" },
-      { label: "Abrir Instagram", keywords: "instagram fotos social", run: open("https://www.instagram.com/goncalooalegria/"), hint: "↗" },
-      { label: "Ligar / WhatsApp", keywords: "telefone telemovel ligar numero", run: open("tel:+351938877605"), hint: "↗" },
-      { label: "Copiar Email", keywords: "email copiar", run: copy("g.alegria.set@gmail.com"), hint: "⌘C" },
+      { label: "Abrir GitHub", keywords: "github repo codigo", run: open(socialLinks.github), hint: "↗" },
+      { label: "Abrir LinkedIn", keywords: "linkedin perfil emprego", run: open(socialLinks.linkedin), hint: "↗" },
+      { label: "Abrir Instagram", keywords: "instagram fotos social", run: open(socialLinks.instagram ?? ""), hint: "↗" },
+      { label: "Ligar / WhatsApp", keywords: "telefone telemovel ligar numero", run: open(socialLinks.phone ?? ""), hint: "↗" },
+      { label: "Copiar Email", keywords: "email copiar", run: copy(socialLinks.email), hint: "⌘C" },
     ];
   }, []);
 
@@ -126,7 +119,7 @@ export default function Header() {
   const shellClass = scrolled
     ? "glass-panel backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.45)] border border-accent/15"
     : "bg-transparent border border-transparent";
-  
+
   const innerPad = scrolled ? "px-4 md:px-6" : "px-4 md:px-8";
 
   return (
@@ -141,26 +134,8 @@ export default function Header() {
             shellClass,
           ].join(" ")}
         >
-          {/* PROGRESS BAR (mesmo elemento): topo full width -> escorre para dentro da pill */}
-          <div
-            aria-hidden
-            className={[
-              "pointer-events-none absolute overflow-hidden transition-all duration-500 ease-out",
-              scrolled
-                ? "left-6 right-6 bottom-2 top-auto h-[1px] rounded-full opacity-100"
-                : "left-0 right-0 top-0 bottom-auto h-[2px] rounded-none opacity-80",
-            ].join(" ")}
-          >
-            <div className="absolute inset-0 bg-accent/10" />
-            <div
-              className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-accent to-accent-2"
-              style={{ width: `${progress}%` }}
-            />
-            <div
-              className="absolute left-0 top-0 bottom-0 blur-[10px] bg-accent/35"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+          {/* PROGRESS BAR */}
+          
 
           <div className={`h-full ${innerPad} flex items-center justify-between gap-3 relative`}>
             {/* Logo */}
@@ -206,12 +181,8 @@ export default function Header() {
                 <Search size={18} />
               </button>
 
-              <button
-                aria-label="Idioma"
-                className="w-10 h-10 grid place-items-center rounded-2xl bg-panel/25 border border-accent/15 hover:border-accent/35 hover:bg-panel/35 transition text-text"
-              >
-                <Globe size={18} />
-              </button>
+              {/* Theme Toggler animado — substitui o antigo Globe */}
+              <AnimatedThemeToggler />
             </div>
           </div>
         </div>

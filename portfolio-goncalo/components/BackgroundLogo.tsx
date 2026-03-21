@@ -67,7 +67,7 @@ export default function BackgroundLogo() {
         <div className="relative">
           {/* base */}
           <div
-            className="w-[min(760px,78vw)] h-[min(760px,78vw)] opacity-[0.075] bg-gradient-to-r from-accent to-accent-2"
+            className="w-[min(760px,78vw)] h-[min(760px,78vw)] opacity-[0.20] bg-gradient-to-r from-accent to-accent-2"
             style={{
               mask: "url(/logopp.svg) no-repeat center / contain",
               WebkitMask: "url(/logopp.svg) no-repeat center / contain",
@@ -76,7 +76,7 @@ export default function BackgroundLogo() {
 
           {/* glow ghost */}
           <div
-            className="absolute inset-0 w-[min(760px,78vw)] h-[min(760px,78vw)] opacity-[0.09] blur-[10px] bg-gradient-to-r from-accent/80 to-accent-2/70"
+            className="absolute inset-0 w-[min(760px,78vw)] h-[min(760px,78vw)] opacity-[0.25] blur-[10px] bg-gradient-to-r from-accent/80 to-accent-2/70"
             style={{
               transform: "translate(10px, 10px)",
               mask: "url(/logopp.svg) no-repeat center / contain",

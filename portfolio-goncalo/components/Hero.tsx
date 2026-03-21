@@ -56,13 +56,13 @@ export default function Hero() {
           </motion.h1>
 
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-base sm:text-lg text-muted mb-8 max-w-xl mx-auto md:mx-0"
-          >
-            Estudante de <strong className="text-text">Engenharia Informática</strong>.
-          </motion.p>
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+  className="text-lg sm:text-xl text-text/80 mb-8 max-w-xl mx-auto md:mx-0 leading-relaxed"
+>
+  Construo o meu futuro entre <span className="text-accent font-semibold">código</span>, <span className="text-accent font-semibold">liderança</span> e <span className="text-accent font-semibold">vontade de aprender</span>.
+</motion.p>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -70,26 +70,23 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="flex gap-3 sm:gap-4 flex-wrap justify-center md:justify-start items-center"
           >
-            {/* Botão 1: Sobre (Efeito de varrimento de luz) */}
-            <a href="#sobre" className="relative group px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-accent/30 bg-[#101829]/50 hover:border-accent/80 transition-all duration-300 font-audiowide text-sm sm:text-base text-text overflow-hidden shadow-lg hover:shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-              <span className="relative z-10">Sobre</span>
-              {/* Luz que passa no hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out" />
-            </a>
+            {/* Botão 1: Sobre */}
+<a href="#sobre" className="relative group px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-accent/30 bg-panel/50 hover:border-accent/80 transition-all duration-300 font-audiowide text-sm sm:text-base text-text overflow-hidden">
+  <span className="relative z-10">Sobre</span>
+  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out" />
+</a>
 
-            {/* Botão 2: Ver Projetos (Primário com glow forte) */}
-            <a href="#portfolio" className="relative group px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-accent/20 border border-accent/50 text-text shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:bg-accent/30 hover:-translate-y-1 transition-all duration-300 font-audiowide text-sm sm:text-base overflow-hidden">
-              <span className="relative z-10">Ver Projetos</span>
-              {/* Fundo radial suave que aparece no hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.5)_0%,transparent_100%)] transition-opacity duration-300" />
-            </a>
+{/* Botão 2: Ver Projetos */}
+<a href="#portfolio" className="relative group px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-accent/20 border border-accent/50 text-text hover:bg-accent/30 hover:-translate-y-1 transition-all duration-300 font-audiowide text-sm sm:text-base overflow-hidden">
+  <span className="relative z-10">Ver Projetos</span>
+  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-accent/10 transition-opacity duration-300" />
+</a>
 
-            {/* Botão 3: Contacto (Minimalista com detalhe interativo) */}
-            <a href="#contacto" className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-muted hover:text-accent transition-all duration-300 font-audiowide text-sm sm:text-base flex items-center gap-2 group">
-              Contacto
-              {/* Linha que cresce ao passar o rato */}
-              <span className="w-0 h-[2px] bg-accent transition-all duration-300 group-hover:w-4 rounded-full shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
-            </a>
+{/* Botão 3: Contacto */}
+<a href="#contacto" className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-muted hover:text-accent transition-all duration-300 font-audiowide text-sm sm:text-base flex items-center gap-2 group">
+  Contacto
+  <span className="w-0 h-[2px] bg-accent transition-all duration-300 group-hover:w-4 rounded-full" />
+</a>
           </motion.div>
         </div>
 
@@ -102,7 +99,7 @@ export default function Hero() {
             className="relative w-[240px] sm:w-[280px] md:w-[340px] lg:w-[380px] aspect-square rounded-3xl cursor-pointer"
           >
             {/* O Cartão em si */}
-            <div className="absolute inset-0 rounded-3xl overflow-hidden border border-accent/30 shadow-[0_20px_60px_rgba(168,85,247,0.25)] bg-panel/30">
+            <div className="absolute inset-0 rounded-3xl overflow-hidden border border-accent/30 shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-panel/30">
               
               {/* Filtro Cyberpunk Base */}
               <div className="absolute inset-0 bg-gradient-to-tr from-accent/30 via-transparent to-accent-2/10 mix-blend-overlay z-10" />

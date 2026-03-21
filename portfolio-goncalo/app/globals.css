@@ -29,9 +29,9 @@
 */
 @theme {
   /* Fontes */
-  --font-exo: var(--font-exo);
-  --font-orbitron: var(--font-orbitron);
-  --font-audiowide: var(--font-audiowide);
+  --font-exo: "Exo 2", ui-sans-serif, system-ui, sans-serif;
+--font-orbitron: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+--font-audiowide: "Audiowide", cursive;
 
   /* Cores */
   --color-bg: #0c1018;
@@ -48,23 +48,38 @@
 
 /* CSS GLOBAL E UTILITÁRIOS */
 
-/* O Light Mode muda as variáveis de cor */
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-bg: #f5f1ff;
-    --color-panel: #ffffff;
-    --color-text: #141226;
-    --color-muted: rgba(20, 18, 38, 0.65);
-    --color-danger: #e53935;
-  }
-}
-/* Suporte manual para classe .light ou data-theme="light" */
+
+/* ══ LIGHT MODE ══ */
 :root[data-theme="light"] {
-  --color-bg: #f5f1ff;
-  --color-panel: #ffffff;
-  --color-text: #141226;
-  --color-muted: rgba(20, 18, 38, 0.65);
-  --color-danger: #e53935;
+  --color-bg: #79b6c9 !important;
+  --color-panel: #a8d8e8 !important;
+  --color-text: #0a1628 !important;
+  --color-muted: rgba(10, 22, 40, 0.75) !important;
+  --color-accent: #1e3a8a !important;
+  --color-accent-2: #1d4ed8 !important;
+  --color-danger: #dc2626 !important;
+}
+
+:root[data-theme="light"] body {
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(30,58,138,0.12), transparent 55%),
+    radial-gradient(circle at 80% 30%, rgba(29,78,216,0.10), transparent 55%),
+    radial-gradient(circle at top left, rgba(30,58,138,0.08), #79b6c9) !important;
+}
+
+/* Glass panel mais opaco em light mode para contraste */
+:root[data-theme="light"] .glass-panel {
+  background-color: color-mix(in srgb, var(--color-panel), transparent 10%) !important;
+  border-color: color-mix(in srgb, var(--color-accent), transparent 60%) !important;
+}
+
+/* Scrollbar light */
+:root[data-theme="light"] .scan-effect::after {
+  background: linear-gradient(90deg, transparent, rgba(30,58,138,0.3), transparent) !important;
+}
+
+:root[data-theme="light"] * {
+  scrollbar-color: rgba(30,58,138,0.4) #79b6c9;
 }
 
 body {
@@ -85,7 +100,8 @@ body {
 
 /* Animações e Utilitários Custom */
 .glitch {
-  text-shadow: 0 0 14px rgba(168,85,247,.55), 0 0 28px rgba(124,58,237,.22);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--color-accent), transparent 45%),
+               0 0 28px color-mix(in srgb, var(--color-accent-2), transparent 78%);
 }
 
 .glass-panel {
@@ -121,35 +137,44 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23a855f7' stroke-width='0.5' stroke-opacity='0.1'%3E%3Cpath d='M50 0H20c-5.523 0-10 4.477-10 10v30c0 5.523 4.477 10 10 10h30c5.523 0 10-4.477 10-10V10c0-5.523-4.477-10-10-10zM10 80V50c0-5.523 4.477-10 10-10h30c5.523 0 10 4.477 10 10v30'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
+
 /* =========================================
-   SCROLLBAR GLOBAL (Webkit)
+   CUSTOM CURSOR (esconder o cursor nativo)
    ========================================= */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  html *,
+  body,
+  body * {
+    cursor: none !important;
+  }
 
-/* Largura da barra inteira */
+  input,
+  textarea,
+  select,
+  [contenteditable="true"] {
+    cursor: text !important;
+  }
+}
+
+/* =========================================
+   SCROLLBAR — ESCONDIDA (TracingBeam substitui)
+   ========================================= */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 0px;
+  background: transparent;
 }
 
-/* O fundo da calha por onde a barra desliza */
-::-webkit-scrollbar-track {
-  background: #080a10; /* O mesmo tom escuro que usámos no fundo do teu terminal */
-  border-left: 1px solid rgba(168, 85, 247, 0.1); /* Uma linha muito subtil a separar */
-}
-
-/* A barra que se move (Thumb) */
-::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.4); /* O teu Roxo (Accent) com transparência */
-  border-radius: 8px; /* Cantos arredondados */
-  border: 2px solid #080a10; /* Cria um efeito de "padding" à volta da barra */
-}
-
-/* Quando passas o rato por cima da barra */
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(168, 85, 247, 0.8); /* Roxo mais forte e aceso */
-}
-
-/* Para o Firefox (que usa regras diferentes do Chrome/Edge/Safari) */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(168, 85, 247, 0.5) #080a10;
+  scrollbar-width: none;
 }
+
+/* =========================================
+   VIEW TRANSITIONS (theme toggler)
+   ========================================= */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+

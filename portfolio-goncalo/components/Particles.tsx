@@ -10,8 +10,9 @@ export default function Particles() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let particles: any[] = [];
-    const particleCount = 40;
+    let animationId: number;          // ← NOVO
+    let particles: Particle[] = [];
+    const particleCount = 60;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -36,19 +37,21 @@ export default function Particles() {
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(0, 242, 254, 0.3)";
-      ctx.strokeStyle = "rgba(168, 85, 247, 0.1)";
+      const accent = getComputedStyle(document.documentElement)
+  .getPropertyValue("--color-accent").trim() || "#a855f7";
+ctx.fillStyle = accent;
+ctx.globalAlpha = 0.3;
 
       particles.forEach((p, i) => {
         p.update();
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
         ctx.fill();
 
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (dist < 150) {
+          if (dist < 200) {
             ctx.lineWidth = 1 - dist / 150;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
@@ -57,14 +60,18 @@ export default function Particles() {
           }
         }
       });
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);   // ← guarda o ID
     };
 
     window.addEventListener("resize", resize);
     resize();
     animate();
-    return () => window.removeEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animationId);               // ← LIMPA o loop
+    };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-40" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-50"/>;
 }
