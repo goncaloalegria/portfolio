@@ -51,10 +51,10 @@
 
 /* ══ LIGHT MODE ══ */
 :root[data-theme="light"] {
-  --color-bg: #79b6c9 !important;
-  --color-panel: #a8d8e8 !important;
+  --color-bg: #8daab8 !important;
+  --color-panel: #a3c2cf !important;
   --color-text: #0a1628 !important;
-  --color-muted: rgba(10, 22, 40, 0.75) !important;
+  --color-muted: rgba(10, 22, 40, 0.7) !important;
   --color-accent: #1e3a8a !important;
   --color-accent-2: #1d4ed8 !important;
   --color-danger: #dc2626 !important;
@@ -62,24 +62,22 @@
 
 :root[data-theme="light"] body {
   background-image:
-    radial-gradient(circle at 20% 10%, rgba(30,58,138,0.12), transparent 55%),
-    radial-gradient(circle at 80% 30%, rgba(29,78,216,0.10), transparent 55%),
-    radial-gradient(circle at top left, rgba(30,58,138,0.08), #79b6c9) !important;
+    radial-gradient(circle at 20% 10%, rgba(30,58,138,0.10), transparent 55%),
+    radial-gradient(circle at 80% 30%, rgba(29,78,216,0.08), transparent 55%),
+    radial-gradient(circle at top left, rgba(30,58,138,0.06), #8daab8) !important;
 }
 
-/* Glass panel mais opaco em light mode para contraste */
 :root[data-theme="light"] .glass-panel {
   background-color: color-mix(in srgb, var(--color-panel), transparent 10%) !important;
   border-color: color-mix(in srgb, var(--color-accent), transparent 60%) !important;
 }
 
-/* Scrollbar light */
 :root[data-theme="light"] .scan-effect::after {
   background: linear-gradient(90deg, transparent, rgba(30,58,138,0.3), transparent) !important;
 }
 
 :root[data-theme="light"] * {
-  scrollbar-color: rgba(30,58,138,0.4) #79b6c9;
+  scrollbar-color: rgba(30,58,138,0.4) #8daab8;
 }
 
 body {
@@ -176,5 +174,12 @@ body {
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+/* =========================================
+   SMOOTH SCROLL
+   ========================================= */
+html {
+  scroll-behavior: smooth;
 }
 

@@ -18,28 +18,28 @@ export default function Header() {
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-  let ticking = false;
+    let ticking = false;
 
-  const update = () => {
-    setScrolled((window.scrollY || 0) > 64);
-    ticking = false;
-  };
+    const update = () => {
+      setScrolled((window.scrollY || 0) > 64);
+      ticking = false;
+    };
 
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
 
-  update();
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", update);
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
 
-  return () => {
-    window.removeEventListener("scroll", onScroll);
-    window.removeEventListener("resize", update);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -105,14 +105,14 @@ export default function Header() {
   const shellInlineStyle: React.CSSProperties = scrolled
     ? {
         width: "min(1120px, calc(100% - 1.25rem))",
-        marginTop: "0.75rem",
-        height: "64px",
-        borderRadius: "24px",
+        marginTop: "0.5rem",
+        height: "52px",
+        borderRadius: "18px",
       }
     : {
         width: "100%",
         marginTop: "0rem",
-        height: "72px",
+        height: "60px",
         borderRadius: "0px",
       };
 
@@ -120,7 +120,7 @@ export default function Header() {
     ? "glass-panel backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.45)] border border-accent/15"
     : "bg-transparent border border-transparent";
 
-  const innerPad = scrolled ? "px-4 md:px-6" : "px-4 md:px-8";
+  const innerPad = scrolled ? "px-3 md:px-6" : "px-3 md:px-8";
 
   return (
     <>
@@ -134,14 +134,11 @@ export default function Header() {
             shellClass,
           ].join(" ")}
         >
-          {/* PROGRESS BAR */}
-          
-
-          <div className={`h-full ${innerPad} flex items-center justify-between gap-3 relative`}>
-            {/* Logo */}
+          <div className={`h-full ${innerPad} flex items-center justify-between gap-2 sm:gap-3 relative`}>
+            {/* Logo — menor em mobile */}
             <Link href="#home" className="group shrink-0" onClick={() => setPaletteOpen(false)}>
               <div
-                className="w-[160px] h-[36px] bg-gradient-to-r from-accent to-accent-2 transition-all group-hover:shadow-[0_0_14px_rgba(168,85,247,0.45)]"
+                className="w-[110px] sm:w-[140px] md:w-[160px] h-[28px] sm:h-[32px] md:h-[36px] bg-gradient-to-r from-accent to-accent-2 transition-all group-hover:shadow-[0_0_14px_rgba(168,85,247,0.45)]"
                 style={{
                   mask: "url(/logopp.svg) no-repeat center / contain",
                   WebkitMask: "url(/logopp.svg) no-repeat center / contain",
@@ -149,7 +146,7 @@ export default function Header() {
               />
             </Link>
 
-            {/* Nome (só quando desces) */}
+            {/* Nome (só em desktop quando desces) */}
             <div
               className={[
                 "absolute left-1/2 -translate-x-1/2 hidden md:flex items-center",
@@ -163,26 +160,28 @@ export default function Header() {
             </div>
 
             {/* Ações direita */}
-            <div className="ml-auto flex items-center gap-2">
+            <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+              {/* Pesquisa desktop */}
               <button
                 onClick={() => setPaletteOpen(true)}
                 aria-label="Abrir pesquisa (Ctrl+K)"
-                className="hidden sm:flex items-center gap-2 h-10 px-3 rounded-2xl bg-panel/25 border border-accent/15 hover:border-accent/35 hover:bg-panel/35 transition text-text"
+                className="hidden sm:flex items-center gap-2 h-9 md:h-10 px-3 rounded-2xl bg-panel/25 border border-accent/15 hover:border-accent/35 hover:bg-panel/35 transition text-text"
               >
-                <Search size={18} />
+                <Search size={16} className="md:w-[18px] md:h-[18px]" />
                 <span className="text-xs font-audiowide text-muted">Ctrl K</span>
               </button>
 
+              {/* Pesquisa mobile */}
               <button
                 onClick={() => setPaletteOpen(true)}
                 aria-label="Abrir pesquisa"
-                className="sm:hidden w-10 h-10 grid place-items-center rounded-2xl bg-panel/25 border border-accent/15 hover:border-accent/35 hover:bg-panel/35 transition text-text"
+                className="sm:hidden w-9 h-9 grid place-items-center rounded-xl bg-panel/25 border border-accent/15 hover:border-accent/35 hover:bg-panel/35 transition text-text"
               >
-                <Search size={18} />
+                <Search size={16} />
               </button>
 
-              {/* Theme Toggler animado — substitui o antigo Globe */}
-              <AnimatedThemeToggler />
+              {/* Theme Toggler */}
+              <AnimatedThemeToggler className="w-9 h-9 sm:w-10 sm:h-10" />
             </div>
           </div>
         </div>
