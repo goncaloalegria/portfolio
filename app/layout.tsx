@@ -9,6 +9,7 @@ import SmoothCursor from "@/components/SmoothCursor";
 import TracingBeam from "@/components/TracingBeam";
 import FloatingCode from "@/components/FloatingCode";
 import StarsBackground from "@/components/StarsBackground";
+import LoadingScreen from "@/components/LoadingScreen";
 
 // 1. Declaração das Fontes (isto é o que estava em falta!)
 const exo = Exo_2({ subsets: ["latin"], variable: "--font-exo", weight: ["400", "600", "800"] });
@@ -19,6 +20,7 @@ const orbitron = Orbitron({ subsets: ["latin"], variable: "--font-orbitron", wei
 
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://oteudominio.pt"), // muda para o teu domínio Vercel quando publicares
   title: "Gonçalo Alegria",
   description: "Portefólio de Gonçalo Alegria. Estudante de Engenharia Informática apaixonado por Cibersegurança, Inteligência Artificial e Desenvolvimento Web.",
   keywords: ["Gonçalo Alegria", "Cibersegurança", "Inteligência Artificial", "Engenharia Informática", "Portefólio", "Desenvolvedor", "Portugal"],
@@ -58,6 +60,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         
         <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
+          
+          <LoadingScreen />
           <SmoothCursor />
           
           {/* Motor Visual */}

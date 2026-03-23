@@ -1,9 +1,15 @@
 "use client";
 
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 export default function AiOrb() {
   const reduceMotion = useReducedMotion();
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   if (reduceMotion) {
     return (
@@ -11,10 +17,13 @@ export default function AiOrb() {
     );
   }
 
+  const isLight = mounted && theme === "light";
+
   return (
     <div
       aria-hidden="true"
-      className="fixed top-[10%] right-[-5%] md:right-[5%] w-[350px] md:w-[600px] aspect-square pointer-events-none z-0 opacity-50"
+      className="fixed top-[10%] right-[-5%] md:right-[5%] w-[350px] md:w-[600px] aspect-square pointer-events-none z-0"
+      style={{ opacity: isLight ? 0.15 : 0.5 }}
     >
       <motion.div
         animate={{

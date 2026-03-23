@@ -1,14 +1,15 @@
 // components/Projects.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { projects } from "@/lib/data";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X, Github } from "lucide-react";
+import { X, Github, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import DecryptTitle from "@/components/DecryptTitle";
 import Tilt3D, { TiltItem } from "@/components/Tilt3D";
+
 
 type Project = (typeof projects)[number];
 
@@ -67,9 +68,7 @@ function ProjectCard3D({
               {p.title}
             </motion.div>
           </TiltItem>
-          <TiltItem z={45}>
-            <p className="text-[12px] text-white/90 line-clamp-1 mb-2 drop-shadow-lg">{p.description}</p>
-          </TiltItem>
+          
           <TiltItem z={50}>
             <div className="flex flex-wrap gap-2">
               {p.languages.slice(0, 4).map((l) => (
@@ -83,13 +82,105 @@ function ProjectCard3D({
   );
 }
 
+/* ── Carrossel de imagens ── */
+function ImageCarousel({ images, title }: { images: string[]; title: string }) {
+  const [current, setCurrent] = useState(0);
+  const hasMultiple = images.length > 1;
+
+  const goNext = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % images.length);
+  }, [images.length]);
+
+  const goPrev = useCallback(() => {
+    setCurrent((prev) => (prev - 1 + images.length) % images.length);
+  }, [images.length]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!hasMultiple) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [hasMultiple, goNext, goPrev]);
+
+  return (
+    <div className="relative w-full h-full group/carousel">
+      {/* Imagem atual */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="w-full h-full relative"
+        >
+          <Image
+            src={images[current]}
+            alt={`${title} — ${current + 1}/${images.length}`}
+            fill
+            className="object-cover md:object-contain"
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {hasMultiple && (
+        <>
+          {/* Botão anterior */}
+          <button
+            onClick={(e) => { e.stopPropagation(); goPrev(); }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 grid place-items-center text-white/80 hover:text-white hover:bg-black/70 transition opacity-0 group-hover/carousel:opacity-100"
+            aria-label="Imagem anterior"
+          >
+            <ChevronLeft size={20} />
+          </button>
+
+          {/* Botão seguinte */}
+          <button
+            onClick={(e) => { e.stopPropagation(); goNext(); }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 grid place-items-center text-white/80 hover:text-white hover:bg-black/70 transition opacity-0 group-hover/carousel:opacity-100"
+            aria-label="Imagem seguinte"
+          >
+            <ChevronRight size={20} />
+          </button>
+
+          {/* Indicadores (dots) */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  i === current
+                    ? "bg-white w-5"
+                    : "bg-white/40 hover:bg-white/70"
+                }`}
+                aria-label={`Imagem ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Contador */}
+          <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white/80 text-xs font-audiowide">
+            {current + 1} / {images.length}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function getTypes(p: any): string[] {
   const langs = (p?.languages ?? []).map((x: string) => String(x).toLowerCase());
   const has = (s: string) => langs.some((l: string) => l.includes(s.toLowerCase()));
   const out: string[] = [];
-  if (has("react") || has("next") || has("tailwind") || has("javascript") || has("web")) out.push("Web");
-  if (has("c") || has("linux") || has("bash") || has("sistemas")) out.push("Systems");
+  if (has("react") || has("next") || has("tailwind") || has("javascript") || has("web") || has("html")) out.push("Web");
+  if (has("c") || has("linux") || has("bash") || has("sistemas") || has("arduino") || has("esp")) out.push("Systems");
   if (has("ai") || has("python")) out.push("AI");
+  if (has("kotlin") || has("java") || has("sql")) out.push("Software");
   if (out.length === 0) out.push("Other");
   return Array.from(new Set(out));
 }
@@ -130,7 +221,7 @@ export default function Projects() {
   }, [selected]);
 
   return (
-    <section id="portfolio" className="py-20 container mx-auto px-4 scroll-mt-24 ">
+    <section id="portfolio" className="py-20 container mx-auto px-4 scroll-mt-24">
       <div className="mb-8">
         <DecryptTitle text="Projetos" className="text-3xl md:text-4xl mb-10" />
         <h3 className="text-xl font-audiowide text-text">Destaques</h3>
@@ -169,13 +260,25 @@ export default function Projects() {
             <>
               <motion.div className="fixed inset-0 bg-black/60 backdrop-blur-md" style={{ zIndex: 9998 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelected(null)} />
               <div className="fixed inset-0 flex items-center justify-center p-4 md:p-6 pointer-events-none" style={{ zIndex: 9999 }}>
-                <motion.div layoutId={reduceMotion ? undefined : `project-container-${selected.id}`} className="bg-bg border border-accent/20 rounded-2xl w-full max-w-6xl max-h-[92vh] overflow-y-auto relative shadow-2xl flex flex-col md:flex-row md:min-h-[560px] pointer-events-auto" style={{ zIndex: 9999 }} onClick={(e) => e.stopPropagation()}>
-                  <button onClick={() => setSelected(null)} className="absolute top-4 right-4 z-10 p-2.5 bg-panel/60 backdrop-blur-md rounded-lg hover:bg-accent/20 transition border border-accent/10 hover:border-accent/40"><X className="text-text" /></button>
-                  <div className="w-full md:w-3/5 h-[360px] md:h-auto relative bg-black/50 overflow-hidden">
-                    <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.4 }} className="w-full h-full relative">
-                      <Image src={selected.demo} alt={selected.title} fill className="object-cover md:object-contain" />
-                    </motion.div>
+                <motion.div
+                  layoutId={reduceMotion ? undefined : `project-container-${selected.id}`}
+                  className="bg-bg border border-accent/20 rounded-2xl w-full max-w-6xl max-h-[92vh] overflow-y-auto relative shadow-2xl flex flex-col md:flex-row md:min-h-[560px] pointer-events-auto"
+                  style={{ zIndex: 9999 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button onClick={() => setSelected(null)} className="absolute top-4 right-4 z-10 p-2.5 bg-panel/60 backdrop-blur-md rounded-lg hover:bg-accent/20 transition border border-accent/10 hover:border-accent/40">
+                    <X className="text-text" />
+                  </button>
+
+                  {/* Carrossel de imagens */}
+                  <div className="w-full md:w-3/5 h-[360px] md:h-auto relative bg-black/50 overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
+                    <ImageCarousel
+                      images={(selected as any).images || [selected.cover]}
+                      title={selected.title}
+                    />
                   </div>
+
+                  {/* Info do projeto */}
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="w-full md:w-2/5 p-6 md:p-10 flex flex-col">
                     <motion.h3 layoutId={reduceMotion ? undefined : `project-title-${selected.id}`} className="text-3xl md:text-4xl font-audiowide text-text mb-4">{selected.title}</motion.h3>
                     <p className="text-muted leading-relaxed mb-6">{selected.description}</p>
@@ -185,9 +288,16 @@ export default function Projects() {
                         {selected.languages.map((l) => (<span key={l} className="px-3 py-1.5 rounded-full border border-accent/20 bg-panel/50 text-xs text-text">{l}</span>))}
                       </div>
                     </div>
-                    <div className="mt-8 pt-6 border-t border-accent/10">
-                      <a href={selected.repoUrl} target="_blank" rel="noreferrer" className="w-full inline-flex items-center justify-center gap-2 py-3.5 font-audiowide bg-accent/10 border border-accent/30 hover:bg-accent/20 transition text-text rounded-xl"><Github size={18} /> Repositório</a>
-                    </div>
+                    <div className="mt-8 pt-6 border-t border-accent/10 flex flex-col gap-3">
+  {(selected as any).demoUrl && (
+    <a href={(selected as any).demoUrl} target="_blank" rel="noreferrer" className="w-full inline-flex items-center justify-center gap-2 py-3.5 font-audiowide bg-accent/20 border border-accent/40 hover:bg-accent/30 transition text-text rounded-xl">
+      <ExternalLink size={18} /> Ver Site
+    </a>
+  )}
+  <a href={selected.repoUrl} target="_blank" rel="noreferrer" className="w-full inline-flex items-center justify-center gap-2 py-3.5 font-audiowide bg-accent/10 border border-accent/30 hover:bg-accent/20 transition text-text rounded-xl">
+    <Github size={18} /> Repositório
+  </a>
+</div>
                   </motion.div>
                 </motion.div>
               </div>

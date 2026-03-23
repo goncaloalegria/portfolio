@@ -73,7 +73,7 @@ export default function FloatingCode() {
       {snippets.map((s) => (
         <motion.div
           key={s.id}
-          className={`absolute font-mono whitespace-pre rounded-xl border border-accent/[0.12] bg-panel/[0.08] text-accent/[0.25] backdrop-blur-[0.5px] select-none ${sizeClasses[s.size]}`}
+          className={`absolute font-mono whitespace-pre rounded-xl border border-accent/[0.15] bg-panel/[0.12] text-accent/[0.30] backdrop-blur-[0.5px] select-none ${sizeClasses[s.size]}`}
           style={{
             left: `${s.x}%`,
             top: `${s.y}%`,
