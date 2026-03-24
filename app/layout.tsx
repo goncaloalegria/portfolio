@@ -20,7 +20,7 @@ const orbitron = Orbitron({ subsets: ["latin"], variable: "--font-orbitron", wei
 
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://oteudominio.pt"), // muda para o teu domínio Vercel quando publicares
+  metadataBase: new URL("https://goncaloalegria.vercel.app"), 
   title: "Gonçalo Alegria",
   description: "Portefólio de Gonçalo Alegria. Estudante de Engenharia Informática apaixonado por Cibersegurança, Inteligência Artificial e Desenvolvimento Web.",
   keywords: ["Gonçalo Alegria", "Cibersegurança", "Inteligência Artificial", "Engenharia Informática", "Portefólio", "Desenvolvedor", "Portugal"],
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Gonçalo Alegria | Cibersegurança & IA",
     description: "Conhece o meu percurso em Engenharia Informática, projetos e foco em construir o futuro da IA e Segurança.",
-    url: "https://oteudominio.pt", // TODO: Mudar para o teu link da Vercel quando publicares!
+    url: "https://goncaloalegria.vercel.app", 
     siteName: "Portefólio - Gonçalo Alegria",
     images: [
       {
