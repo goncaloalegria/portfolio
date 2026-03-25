@@ -122,7 +122,7 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
             src={images[current]}
             alt={`${title} — ${current + 1}/${images.length}`}
             fill
-            className="object-cover"
+            className="object-cover md:"
           />
         </motion.div>
       </AnimatePresence>
@@ -260,9 +260,10 @@ export default function Projects() {
             <>
               <motion.div className="fixed inset-0 bg-black/60 backdrop-blur-md" style={{ zIndex: 9998 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelected(null)} />
               <div className="fixed inset-0 flex items-center justify-center p-4 md:p-6 pointer-events-none" style={{ zIndex: 9999 }}>
-                <motion.div
+
+                  <motion.div
                   layoutId={reduceMotion ? undefined : `project-container-${selected.id}`}
-                  className="bg-bg border border-accent/20 rounded-2xl w-full max-w-6xl max-h-[92vh] overflow-y-auto relative shadow-2xl flex flex-col md:flex-row md:min-h-[560px] pointer-events-auto"
+                  className="bg-bg border border-accent/20 rounded-2xl w-full max-w-6xl h-[92vh] md:max-h-[92vh] overflow-hidden relative shadow-2xl flex flex-col md:flex-row md:min-h-[560px] pointer-events-auto"
                   style={{ zIndex: 9999 }}
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -271,7 +272,8 @@ export default function Projects() {
                   </button>
 
                   {/* Carrossel de imagens */}
-                  <div className="w-full md:w-3/5 h-[280px] sm:h-[360px] md:h-auto relative bg-panel/30 overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
+                  <div className="w-full md:w-3/5 h-[45vh] md:h-auto relative bg-panel/30 overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none shrink-0">
+
                     <ImageCarousel
                       images={(selected as any).images || [selected.cover]}
                       title={selected.title}
@@ -279,7 +281,7 @@ export default function Projects() {
                   </div>
 
                   {/* Info do projeto */}
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="w-full md:w-2/5 p-6 md:p-10 flex flex-col">
+                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="w-full md:w-2/5 p-6 md:p-10 flex flex-col overflow-y-auto flex-1">
                     <motion.h3 layoutId={reduceMotion ? undefined : `project-title-${selected.id}`} className="text-3xl md:text-4xl font-audiowide text-text mb-4">{selected.title}</motion.h3>
                     <p className="text-muted leading-relaxed mb-6">{selected.description}</p>
                     <div className="mb-auto">
