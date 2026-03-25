@@ -122,7 +122,7 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
             src={images[current]}
             alt={`${title} — ${current + 1}/${images.length}`}
             fill
-            className="object-cover md:object-contain"
+            className="object-cover"
           />
         </motion.div>
       </AnimatePresence>
@@ -271,7 +271,7 @@ export default function Projects() {
                   </button>
 
                   {/* Carrossel de imagens */}
-                  <div className="w-full md:w-3/5 h-[360px] md:h-auto relative bg-black/50 overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
+                  <div className="w-full md:w-3/5 h-[280px] sm:h-[360px] md:h-auto relative bg-panel/30 overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
                     <ImageCarousel
                       images={(selected as any).images || [selected.cover]}
                       title={selected.title}
