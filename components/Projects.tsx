@@ -132,7 +132,7 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
           {/* Botão anterior */}
           <button
             onClick={(e) => { e.stopPropagation(); goPrev(); }}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 grid place-items-center text-white/80 hover:text-white hover:bg-black/70 transition opacity-0 group-hover/carousel:opacity-100"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 grid place-items-center text-white/80 hover:text-white hover:bg-black/70 transition opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100"
             aria-label="Imagem anterior"
           >
             <ChevronLeft size={20} />
@@ -141,7 +141,7 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
           {/* Botão seguinte */}
           <button
             onClick={(e) => { e.stopPropagation(); goNext(); }}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 grid place-items-center text-white/80 hover:text-white hover:bg-black/70 transition opacity-0 group-hover/carousel:opacity-100"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 grid place-items-center text-white/80 hover:text-white hover:bg-black/70 transition opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100"
             aria-label="Imagem seguinte"
           >
             <ChevronRight size={20} />

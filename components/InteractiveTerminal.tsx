@@ -66,18 +66,15 @@ export default function InteractiveTerminal() {
         );
         break;
       case "whoami":
-        response = (
-          <div className="text-[#00f2fe] leading-relaxed">
-            <span className="text-text font-bold">Gonçalo Alegria</span><br/><br/>
-            [+] Eng. Informática @ Universidade Lusófona<br/>
-            [+] Presidente do NEDI<br/>
-            [+] Membro da equipa de comunicação do DEISI<br/>
-            [+] Focus: Cybersecurity &amp; AI<br/>
-            [+] Nos tempos livres: desenvolvimento web<br/><br/>
-            <span className="text-green-400">Status: Aprendendo algo novo todos os dias ✅</span>
-          </div>
-        );
-        break;
+  response = (
+    <div className="text-[#00f2fe] leading-relaxed">
+      <span className="text-text font-bold">Gonçalo Alegria</span><br/><br/>
+      <span className="text-muted">Estudante de Engenharia Informática na Universidade Lusófona, com interesse em Cibersegurança e Inteligência Artificial. Atualmente Presidente do NEDI e membro da equipa de comunicação do DEISI, onde trabalho para aproximar estudantes do mercado tecnológico.</span><br/><br/>
+      <span className="text-muted">Gosto de explorar diferentes áreas da tecnologia e de transformar o que aprendo em projetos concretos. Nos tempos livres, desenvolvo websites — como este portefólio — para continuar a evoluir.</span><br/><br/>
+      <span className="text-muted">Acredito que liderança, curiosidade e consistência são as melhores ferramentas que tenho.</span>
+    </div>
+  );
+  break;
       case "skills":
         response = (
           <div className="text-[#00f2fe] leading-relaxed">
@@ -108,24 +105,27 @@ export default function InteractiveTerminal() {
         );
         break;
       case "xp":
-        response = (
-          <div className="text-muted leading-relaxed">
-            <span className="text-text font-bold">Experiência</span><br/><br/>
-            <span className="text-[#00f2fe]">Jul 2025 — Presente</span><br/>
-            Presidente do NEDI · Universidade Lusófona<br/>
-            <span className="text-muted text-[12px]">Liderança de equipas, organização de eventos, networking</span><br/><br/>
-            <span className="text-[#00f2fe]">Set 2024 — Jun 2027</span><br/>
-            Eng. Informática · Universidade Lusófona<br/>
-            <span className="text-muted text-[12px]">Membro da equipa de comunicação do DEISI</span><br/><br/>
-            <span className="text-[#00f2fe]">Jan 2023 — Presente</span><br/>
-            Aprendiz Estruturas Metálicas · SetBaguinox<br/>
-            <span className="text-muted text-[12px]">Fabrico, montagem, instalação, faturação</span><br/><br/>
-            <span className="text-[#00f2fe]">Ago 2024 — Set 2024</span><br/>
-            Candidato a Piloto · Força Aérea Portuguesa<br/>
-            <span className="text-muted text-[12px]">5h de voo, provas físicas/psicotécnicas aprovadas</span>
-          </div>
-        );
-        break;
+  response = (
+    <div className="text-muted leading-relaxed">
+      <span className="text-text font-bold">Experiência</span><br/><br/>
+      <span className="text-[#00f2fe]">Jul 2025 — Presente</span><br/>
+      Presidente do NEDI · Universidade Lusófona<br/>
+      <span className="text-muted text-[12px]">Liderança, organização de eventos, networking</span><br/><br/>
+      <span className="text-[#00f2fe]">Nov 2025 — Presente</span><br/>
+      Equipa de Comunicação do DEISI · Universidade Lusófona<br/>
+      <span className="text-muted text-[12px]">Comunicação, divulgação, promoção de eventos</span><br/><br/>
+      <span className="text-[#00f2fe]">Nov 2025</span><br/>
+      Voluntário na Web Summit 2025 · Lisboa<br/>
+      <span className="text-muted text-[12px]">Apoio operacional, contacto com startups e investidores</span><br/><br/>
+      <span className="text-[#00f2fe]">Jan 2023 — Presente</span><br/>
+      Aprendiz Estruturas Metálicas · SetBaguinox<br/>
+      <span className="text-muted text-[12px]">Fabrico, montagem, instalação, faturação</span><br/><br/>
+      <span className="text-[#00f2fe]">Ago 2024 — Set 2024</span><br/>
+      Candidato a Piloto Aviador · Força Aérea Portuguesa<br/>
+      <span className="text-muted text-[12px]">5h de voo, provas físicas/psicotécnicas aprovadas</span>
+    </div>
+  );
+  break;
       case "langs":
         response = (
           <div className="text-[#00f2fe] leading-relaxed">
