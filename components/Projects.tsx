@@ -259,7 +259,7 @@ export default function Projects() {
           {selected && (
             <>
               <motion.div className="fixed inset-0 bg-black/60 backdrop-blur-md" style={{ zIndex: 9998 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelected(null)} />
-              <div className="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 pointer-events-none" style={{ zIndex: 9999, paddingBottom: "env(safe-area-inset-bottom)" }}>
+              <div className="fixed top-0 left-0 right-0 h-[100dvh] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 pointer-events-none" style={{ zIndex: 9999 }}>
 
                   <motion.div
                   layoutId={reduceMotion ? undefined : `project-container-${selected.id}`}
