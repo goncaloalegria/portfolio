@@ -259,12 +259,11 @@ export default function Projects() {
           {selected && (
             <>
               <motion.div className="fixed inset-0 bg-black/60 backdrop-blur-md" style={{ zIndex: 9998 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelected(null)} />
-              <div className="fixed inset-0 flex items-center justify-center p-4 md:p-6 pointer-events-none" style={{ zIndex: 9999 }}>
+              <div className="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 pointer-events-none" style={{ zIndex: 9999 }}>
 
                   <motion.div
                   layoutId={reduceMotion ? undefined : `project-container-${selected.id}`}
-                  className="bg-bg border border-accent/20 rounded-2xl w-full max-w-6xl h-[92vh] md:max-h-[92vh] overflow-hidden relative shadow-2xl flex flex-col md:flex-row md:min-h-[560px] pointer-events-auto"
-                  style={{ zIndex: 9999 }}
+                  className="bg-bg border border-accent/20 rounded-t-2xl sm:rounded-2xl w-full max-w-6xl h-[85vh] sm:h-auto sm:max-h-[92vh] overflow-hidden relative shadow-2xl flex flex-col md:flex-row md:min-h-[560px] pointer-events-auto"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button onClick={() => setSelected(null)} className="absolute top-4 right-4 z-10 p-2.5 bg-panel/60 backdrop-blur-md rounded-lg hover:bg-accent/20 transition border border-accent/10 hover:border-accent/40">
@@ -272,7 +271,7 @@ export default function Projects() {
                   </button>
 
                   {/* Carrossel de imagens */}
-                  <div className="w-full md:w-3/5 h-[45vh] md:h-auto relative bg-panel/30 overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none shrink-0">
+                  <div className="w-full md:w-3/5 h-[30vh] sm:h-[40vh] md:h-auto relative bg-panel/30 overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none shrink-0">
 
                     <ImageCarousel
                       images={(selected as any).images || [selected.cover]}
