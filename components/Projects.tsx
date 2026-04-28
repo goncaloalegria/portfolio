@@ -62,15 +62,15 @@ function ProjectCard3D({
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
         </div>
 
-        <div className="absolute left-5 right-5 bottom-4 z-30" style={{ transformStyle: "preserve-3d" }}>
+        <div className="absolute left-2 right-2 bottom-2 sm:left-5 sm:right-5 sm:bottom-4 z-30" style={{ transformStyle: "preserve-3d" }}>
           <TiltItem z={60}>
-            <motion.div layoutId={reduceMotion ? undefined : `project-title-${p.id}`} className="font-audiowide text-[17px] text-white drop-shadow-lg mb-2">
+            <motion.div layoutId={reduceMotion ? undefined : `project-title-${p.id}`} className="font-audiowide text-[11px] sm:text-[17px] text-white drop-shadow-lg mb-1 sm:mb-2 line-clamp-1">
               {p.title}
             </motion.div>
           </TiltItem>
           
           <TiltItem z={50}>
-            <div className="flex flex-wrap gap-2">
+  <div className="hidden sm:flex flex-wrap gap-2">
               {p.languages.slice(0, 4).map((l) => (
                 <span key={l} className="px-2.5 py-1 text-[10px] text-white/90 border border-white/25 bg-black/30 rounded-full backdrop-blur-sm uppercase tracking-wider">{l}</span>
               ))}
@@ -228,7 +228,7 @@ export default function Projects() {
       </div>
 
       {featured.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mb-16">
           {featured.map((p) => (
             <ProjectCard3D key={p.id} p={p} onOpen={() => setSelected(p)} priority />
           ))}
@@ -244,7 +244,7 @@ export default function Projects() {
         </div>
       </div>
 
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <motion.div layout className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6">
         <AnimatePresence mode="popLayout">
           {filteredRest.map((p) => (
             <motion.div key={p.id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }} transition={{ duration: 0.3 }}>
