@@ -173,7 +173,7 @@ case "edu":
         break;
       case "clear":
         setHistory([
-          { id: Date.now(), type: "response", text: initialMessfage },
+          { id: Date.now(), type: "response", text: initialMessage },
           { id: Date.now() + 1, type: "response", text: initialHint },
         ]);
         return;
