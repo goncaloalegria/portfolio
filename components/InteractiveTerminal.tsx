@@ -56,7 +56,8 @@ export default function InteractiveTerminal() {
             <span className="text-[#00f2fe]">whoami</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— Quem sou eu<br/>
             <span className="text-[#00f2fe]">skills</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— Competências técnicas<br/>
             <span className="text-[#00f2fe]">softskills</span>&nbsp;— Competências pessoais<br/>
-            <span className="text-[#00f2fe]">xp</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— Experiência e percurso<br/>
+            <span className="text-[#00f2fe]">xp</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— Experiência profissional<br/>
+            <span className="text-[#00f2fe]">edu</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— Formação académica<br/>
             <span className="text-[#00f2fe]">langs</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— Idiomas<br/>
             <span className="text-[#00f2fe]">contact</span>&nbsp;&nbsp;&nbsp;&nbsp;— Contactos e redes<br/>
             <span className="text-[#00f2fe]">clear</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— Limpar o ecrã<br/>
@@ -110,19 +111,32 @@ export default function InteractiveTerminal() {
       <span className="text-text font-bold">Experiência</span><br/><br/>
       <span className="text-[#00f2fe]">Jul 2025 — Presente</span><br/>
       Presidente do NEDI · Universidade Lusófona<br/>
-      <span className="text-muted text-[12px]">Liderança, organização de eventos, networking</span><br/><br/>
+      <span className="text-muted text-[12px]">Liderança de equipas, organização de eventos, networking</span><br/><br/>
       <span className="text-[#00f2fe]">Nov 2025 — Presente</span><br/>
-      Equipa de Comunicação do DEISI · Universidade Lusófona<br/>
-      <span className="text-muted text-[12px]">Comunicação, divulgação, promoção de eventos</span><br/><br/>
+      Equipa de Comunicação · DEISI · Universidade Lusófona<br/>
+      <span className="text-muted text-[12px]">Comunicação e divulgação de iniciativas do departamento</span><br/><br/>
       <span className="text-[#00f2fe]">Nov 2025</span><br/>
-      Voluntário na Web Summit 2025 · Lisboa<br/>
-      <span className="text-muted text-[12px]">Apoio operacional, contacto com startups e investidores</span><br/><br/>
+      Voluntário · Web Summit 2025 · Lisboa<br/>
+      <span className="text-muted text-[12px]">Apoio operacional, networking internacional, contacto com startups e speakers</span><br/><br/>
       <span className="text-[#00f2fe]">Jan 2023 — Presente</span><br/>
       Aprendiz Estruturas Metálicas · SetBaguinox<br/>
       <span className="text-muted text-[12px]">Fabrico, montagem, instalação, faturação</span><br/><br/>
       <span className="text-[#00f2fe]">Ago 2024 — Set 2024</span><br/>
-      Candidato a Piloto Aviador · Força Aérea Portuguesa<br/>
+      Candidato a Piloto · Força Aérea Portuguesa<br/>
       <span className="text-muted text-[12px]">5h de voo, provas físicas/psicotécnicas aprovadas</span>
+    </div>
+  );
+  break;
+case "edu":
+  response = (
+    <div className="text-muted leading-relaxed">
+      <span className="text-text font-bold">Formação</span><br/><br/>
+      <span className="text-[#00f2fe]">Set 2024 — Jun 2027</span><br/>
+      Licenciatura em Engenharia Informática · Universidade Lusófona<br/>
+      <span className="text-muted text-[12px]">Foco em Cibersegurança e AI · Programação, sistemas, redes, BD</span><br/><br/>
+      <span className="text-[#00f2fe]">Set 2020 — Jun 2023</span><br/>
+      Ciências e Tecnologias · Esc. Sec. Lima de Freitas, Setúbal<br/>
+      <span className="text-muted text-[12px]">Média final de 15.1 valores · Matemática, Física, Química</span>
     </div>
   );
   break;
@@ -159,7 +173,7 @@ export default function InteractiveTerminal() {
         break;
       case "clear":
         setHistory([
-          { id: Date.now(), type: "response", text: initialMessage },
+          { id: Date.now(), type: "response", text: initialMessfage },
           { id: Date.now() + 1, type: "response", text: initialHint },
         ]);
         return;
