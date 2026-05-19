@@ -228,12 +228,20 @@ export default function Projects() {
       </div>
 
       {featured.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mb-16">
-          {featured.map((p) => (
-            <ProjectCard3D key={p.id} p={p} onOpen={() => setSelected(p)} priority />
-          ))}
-        </div>
-      )}
+  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mb-16">
+    {featured.map((p, index) => (
+      <motion.div
+        key={p.id}
+        initial={reduceMotion ? false : { opacity: 0, y: 30, filter: "blur(8px)" }}
+        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.55, ease: "easeOut", delay: index * 0.15 }}
+      >
+        <ProjectCard3D p={p} onOpen={() => setSelected(p)} priority />
+      </motion.div>
+    ))}
+  </div>
+)}
 
       <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <h3 className="text-xl font-audiowide text-text">Arquivo de Projetos</h3>
@@ -245,14 +253,22 @@ export default function Projects() {
       </div>
 
       <motion.div layout className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6">
-        <AnimatePresence mode="popLayout">
-          {filteredRest.map((p) => (
-            <motion.div key={p.id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }} transition={{ duration: 0.3 }}>
-              <ProjectCard3D p={p} onOpen={() => setSelected(p)} />
-            </motion.div>
-          ))}
-        </AnimatePresence>
+  <AnimatePresence mode="popLayout">
+    {filteredRest.map((p, index) => (
+      <motion.div
+        key={p.id}
+        layout
+        initial={reduceMotion ? false : { opacity: 0, y: 30, filter: "blur(8px)" }}
+        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, amount: 0.15 }}
+        exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }}
+        transition={{ duration: 0.45, ease: "easeOut", delay: index * 0.08 }}
+      >
+        <ProjectCard3D p={p} onOpen={() => setSelected(p)} />
       </motion.div>
+    ))}
+  </AnimatePresence>
+</motion.div>
 
       {mounted && createPortal(
         <AnimatePresence>

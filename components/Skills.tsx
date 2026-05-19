@@ -99,16 +99,35 @@ export default function Skills() {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.5, ease: "easeOut" as const },
-    },
-  };
+  hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
+};
 
-  const toggleExpand = (name: string) => {
+const skillsListVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const skillItemVariants = {
+  hidden: { opacity: 0, x: -12 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: "easeOut" as const },
+  },
+};
+
+const toggleExpand = (name: string) => {
     setExpanded((prev) => (prev === name ? null : name));
   };
 
@@ -134,8 +153,11 @@ export default function Skills() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-3">
-                    {g.items.map((s) => {
+                        <motion.div
+                        className="flex flex-col gap-3"
+                        variants={reduceMotion ? undefined : skillsListVariants}
+                        >
+                      {g.items.map((s) => {
                       const { rank, tone } = levelToRank(s.level);
                       const isExpanded = expanded === s.name;
                       const dim = active && active !== s.name && !isExpanded ? "opacity-40" : "opacity-100";
@@ -143,18 +165,18 @@ export default function Skills() {
 
                       return (
                         <motion.button
-                          key={s.name}
-                          type="button"
-                          onClick={() => toggleExpand(s.name)}
-                          onMouseEnter={() => setActive(s.name)}
-                          onMouseLeave={() => setActive(null)}
-                          onFocus={() => setActive(s.name)}
-                          onBlur={() => setActive(null)}
-                          className={["text-left rounded-2xl border p-3 transition outline-none focus:ring-2 ring-accent", tone, hot, dim].join(" ")}
-                          whileHover={reduceMotion ? undefined : { y: -2 }}
-                          transition={{ type: "spring", stiffness: 320, damping: 24 }}
-                          layout
-                        >
+  key={s.name}
+  type="button"
+  onClick={() => toggleExpand(s.name)}
+  onMouseEnter={() => setActive(s.name)}
+  onMouseLeave={() => setActive(null)}
+  onFocus={() => setActive(s.name)}
+  onBlur={() => setActive(null)}
+  className={["text-left rounded-2xl border p-3 transition outline-none focus:ring-2 ring-accent", tone, hot, dim].join(" ")}
+  whileHover={reduceMotion ? undefined : { y: -2 }}
+  variants={reduceMotion ? undefined : skillItemVariants}
+  layout
+>
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
                               <div className="flex items-center gap-1.5">
@@ -197,7 +219,7 @@ export default function Skills() {
                         </motion.button>
                       );
                     })}
-                  </div>
+                  </motion.div>
                 </div>
               </GlowingCard>
             </motion.div>

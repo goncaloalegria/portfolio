@@ -1,7 +1,11 @@
+"use client";
+
 import { experience, education } from "@/lib/data";
 import { Calendar, GraduationCap, Briefcase } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import GlowingCard from "@/components/GlowingCard";
 import DecryptTitle from "@/components/DecryptTitle";
+
 
 type TimelineItem = {
   role: string;
@@ -10,8 +14,9 @@ type TimelineItem = {
   desc: string;
   tags: string[];
 };
-
 function TimelineSection({ title, icon, items }: { title: string; icon: React.ReactNode; items: TimelineItem[] }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <div>
       <div className="flex items-center gap-3 mb-8">
@@ -23,7 +28,14 @@ function TimelineSection({ title, icon, items }: { title: string; icon: React.Re
 
       <div className="relative border-l-2 border-accent/20 ml-3 md:ml-4 space-y-10">
         {items.map((item, index) => (
-          <div key={index} className="relative pl-8 md:pl-12 group/timeline">
+          <motion.div
+            key={index}
+            initial={reduceMotion ? false : { opacity: 0, x: -30, filter: "blur(8px)" }}
+            whileInView={reduceMotion ? undefined : { opacity: 1, x: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.55, ease: "easeOut", delay: index * 0.15 }}
+            className="relative pl-8 md:pl-12 group/timeline"
+          >
             {/* Bolinha da Timeline */}
             <div className="absolute -left-[11px] top-1.5 w-5 h-5 rounded-full bg-bg border-2 border-accent/50 transition-all duration-300 z-10 group-hover/timeline:border-accent group-hover/timeline:bg-accent group-hover/timeline:shadow-[0_0_15px_rgba(168,85,247,0.8)]" />
 
@@ -61,7 +73,7 @@ function TimelineSection({ title, icon, items }: { title: string; icon: React.Re
                 </div>
               </div>
             </GlowingCard>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
